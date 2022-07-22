@@ -1,0 +1,22 @@
+{
+  "name": "@franzzemen/re-data-type",
+  "version": "0.0.1",
+  "description": "Rules Engine Data Types",
+  "main": "Gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/franzzemen/re-data-type.git"
+  },
+  "author": "Franz Zemen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/franzzemen/re-data-type/issues"
+  },
+  "homepage": "https://github.com/franzzemen/re-data-type#readme",
+  "dependencies": {
+    "@franzzemen/app-utility": "0.0.2"
+  }
+}
