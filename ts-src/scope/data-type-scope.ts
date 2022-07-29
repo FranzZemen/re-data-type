@@ -1,5 +1,5 @@
 import {ExecutionContextI} from '@franzzemen/app-utility';
-import {Scope} from '@franzzemen/re-common';
+import {RuleElementModuleReference, Scope} from '@franzzemen/re-common';
 import {DataTypeI, StandardDataType} from '../data-type';
 import {DataTypeOptions} from './data-type-options';
 import {DataTypeFactory} from '../factory/data-type-factory';
@@ -32,5 +32,9 @@ export class DataTypeScope extends Scope {
 
   getDataType(refName: string, searchParent = true, ec?: ExecutionContextI): DataTypeI {
     return this.getScopedFactory<DataTypeI>(refName, DataTypeScope.DataTypeFactory, searchParent, ec);
+  }
+
+  addDataTypes(dataTypes: RuleElementModuleReference[], override = false, overrideDown = false, ec?: ExecutionContextI) {
+    this.add<DataTypeI>(dataTypes,  DataTypeScope.DataTypeFactory, override, overrideDown, ec);
   }
 }
