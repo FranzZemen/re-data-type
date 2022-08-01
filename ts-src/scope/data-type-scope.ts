@@ -37,4 +37,8 @@ export class DataTypeScope extends Scope {
   addDataTypes(dataTypes: RuleElementModuleReference[], override = false, overrideDown = false, ec?: ExecutionContextI) {
     this.add<DataTypeI>(dataTypes,  DataTypeScope.DataTypeFactory, override, overrideDown, ec);
   }
+
+  hasDataType(refName: string, ec?: ExecutionContextI): boolean {
+    return this.hasFactory(refName, DataTypeScope.DataTypeFactory, ec);
+  }
 }
