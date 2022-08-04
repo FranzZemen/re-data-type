@@ -1,6 +1,6 @@
 {
   "name": "@franzzemen/re-data-type",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Rules Engine Data Types",
   "main": "Gulpfile.js",
   "scripts": {
