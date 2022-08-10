@@ -1,6 +1,6 @@
 {
   "name": "@franzzemen/re-data-type",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Rules Engine Data Types",
   "main": "Gulpfile.js",
   "scripts": {
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@franzzemen/app-utility": "0.2.1",
-    "@franzzemen/re-common": "0.0.33",
+    "@franzzemen/re-common": "0.0.34",
     "fastest-validator": "^1.12.0",
     "moment": "^2.29.4",
     "object-path": "^0.11.8",
