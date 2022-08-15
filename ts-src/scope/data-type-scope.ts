@@ -30,8 +30,8 @@ export class DataTypeScope extends Scope {
   ];
 
 
-  constructor(options?: DataTypeOptions, ec?: ExecutionContextI) {
-    super(options, ec);
+  constructor(options?: DataTypeOptions, parentScope?: Scope, ec?: ExecutionContextI) {
+    super(options, parentScope, ec);
 
     this.set(DataTypeScope.DataTypeFactory, new DataTypeFactory());
     this.set(DataTypeScope.StandardDataTypeInferenceStack, DataTypeScope.standardDataTypeInferenceStack);
