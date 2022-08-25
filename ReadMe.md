@@ -14,4 +14,4 @@ As a contributor:
         npm i
 
 ## Wiki
-[Wiki](./ts-src/wiki/wiki.md)
+[Wiki](./ts-src/wiki.md)
