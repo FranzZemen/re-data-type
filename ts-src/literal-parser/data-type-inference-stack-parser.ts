@@ -1,5 +1,6 @@
-import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
-import {InferenceStackParser} from '@franzzemen/re-common';
+import {CheckFunction, ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
+import {InferenceStackParser, isRuleElementModuleReference, RuleElementModuleReference} from '@franzzemen/re-common';
+import Validator from 'fastest-validator';
 import {StandardDataType} from '../standard-data-type.js';
 import {BooleanLiteralParser} from './boolean-literal-parser.js';
 import {DataTypeLiteralParserI} from './data-type-literal-parser.js';
@@ -12,36 +13,40 @@ import {TimestampLiteralParser} from './timestamp-literal-parser.js';
 
 
 export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeLiteralParserI>{
-  constructor(private standardDataTypeInferenceStack?: string[], execContext?: ExecutionContextI) {
+  private checkFunction: CheckFunction = (new Validator()).compile({
+    refName: {type: 'string', optional: false},
+    parse: {type: 'function', optional: false}
+  })
+  constructor(private standardDataTypeInferenceStack?: string[], ec?: ExecutionContextI) {
     super();
     if(standardDataTypeInferenceStack) {
       standardDataTypeInferenceStack.forEach(inference => {
         switch (inference) {
           case StandardDataType.Text:
-            this.addParser(new TextLiteralParser(), false, execContext);
+            this.addParser(new TextLiteralParser(), false, undefined, undefined, ec);
             break;
           case StandardDataType.Float:
-            this.addParser(new FloatLiteralParser(), false, execContext);
+            this.addParser(new FloatLiteralParser(), false, undefined, undefined, ec);
             break;
           case StandardDataType.Number:
-            this.addParser(new NumberLiteralParser(), false, execContext);
+            this.addParser(new NumberLiteralParser(), false, undefined, undefined, ec);
             break;
           case StandardDataType.Boolean:
-            this.addParser(new BooleanLiteralParser(), false, execContext);
+            this.addParser(new BooleanLiteralParser(), false, undefined, undefined, ec);
             break;
           case StandardDataType.Timestamp:
-            this.addParser(new TimestampLiteralParser(), false, execContext);
+            this.addParser(new TimestampLiteralParser(), false, undefined, undefined, ec);
             break;
           case StandardDataType.Date:
-            this.addParser(new DateLiteralParser(), false, execContext);
+            this.addParser(new DateLiteralParser(), false, undefined, undefined, ec);
             break;
           case StandardDataType.Time:
-            this.addParser(new TimeLiteralParser(), false, execContext);
+            this.addParser(new TimeLiteralParser(), false, undefined, undefined, ec);
             break;
         }
       });
     } else {
-      const log = new LoggerAdapter(execContext, 'rules-engine', 'data-type-stack-parser', 'constructor');
+      const log = new LoggerAdapter(ec, 'rules-engine', 'data-type-stack-parser', 'constructor');
       log.warn('Standard inference stack not used');
     }
   }
@@ -70,4 +75,22 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
     }
   }
 
+
+  addParser(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, override?: boolean, check?: CheckFunction, paramsArray?: any[], ec?: ExecutionContextI): Promise<DataTypeLiteralParserI> | DataTypeLiteralParserI {
+    if(isRuleElementModuleReference(stackedParser)) {
+      if(stackedParser.module.loadSchema === undefined && check === undefined) {
+        check = this.checkFunction;
+      }
+    }
+    return super.addParser(stackedParser, override, check, paramsArray, ec);
+  }
+
+  addParserAtStackIndex(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, stackIndex: number, check?: CheckFunction, paramsArray?: any[], ec?: ExecutionContextI): boolean | Promise<boolean> {
+    if(isRuleElementModuleReference(stackedParser)) {
+      if(stackedParser.module.loadSchema === undefined && check === undefined) {
+        check = this.checkFunction;
+      }
+    }
+    return super.addParserAtStackIndex(stackedParser, stackIndex, check, paramsArray, ec);
+  }
 }
