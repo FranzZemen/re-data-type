@@ -1,1 +1,1 @@
-export * from './data-type-hint-key';
+export * from './data-type-hint-key.js';

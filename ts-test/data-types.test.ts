@@ -1,6 +1,6 @@
 import chai from 'chai';
 import 'mocha';
-import {DataTypeI, DataTypeScope, isStandardDataType, StandardDataType} from '../publish';
+import {DataTypeI, DataTypeScope, isStandardDataType, StandardDataType} from '../publish/index.js';
 
 
 let should = chai.should();
@@ -9,9 +9,9 @@ let expect = chai.expect;
 
 
 
-describe('Rules engine tests', () => {
-  describe('Data types tests', () => {
-    describe('General tests', () => {
+describe('re tests', () => {
+  describe('data types tests', () => {
+    describe('general tests', () => {
       it('should identify a standard data type when passed a standard data type', done => {
         const result = isStandardDataType(StandardDataType.Time);
         expect(result).to.exist;

@@ -1,5 +1,5 @@
 import {ExecutionContextI} from '@franzzemen/app-utility';
-import {StandardDataType} from '../data-type';
+import {StandardDataType} from '../standard-data-type.js';
 
 export interface DataTypeLiteralParserI {
   refName: string;

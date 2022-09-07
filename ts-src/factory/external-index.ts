@@ -1,1 +1,1 @@
-export * from './data-type-factory';
+export * from './data-type-factory.js';

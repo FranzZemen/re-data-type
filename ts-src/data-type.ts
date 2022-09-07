@@ -1,15 +1,8 @@
 import {isEnumeratedType, reverseEnumerationToSet} from '@franzzemen/app-utility';
 import {RuleElementReference} from '@franzzemen/re-common';
+import {StandardDataType} from './standard-data-type.js';
 
-export enum StandardDataType {
-  Text = 'Text',
-  Number = 'Number',
-  Boolean = 'Boolean',
-  Date = 'Date',
-  Time = 'Time',
-  Timestamp = 'Timestamp',
-  Float = 'Float'
-}
+
 
 export const standardDataTypeReverseMapping = reverseEnumerationToSet(StandardDataType);
 

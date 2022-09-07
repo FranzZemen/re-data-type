@@ -1,6 +1,10 @@
-import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
-import moment, {isMoment, Moment} from 'moment';
-import {DataType, StandardDataType} from '../data-type';
+import {DataType} from '../data-type.js';
+import {StandardDataType} from '../standard-data-type.js';
+
+import {Moment, default as moment} from 'moment';
+const isMoment = moment.isMoment;
+
+
 
 export function isTimestampDataType (dt: any | TimestampDataType): dt is TimestampDataType {
   return dt.type === StandardDataType.Timestamp;
@@ -11,7 +15,7 @@ export class TimestampDataType extends DataType {
     super(StandardDataType.Timestamp);
   }
 
-  eval(value: any): Moment {
+  eval(value: any): moment.Moment {
     const basicType = typeof value;
     if (basicType === 'string') {
       // Dates are expressed as numbers, but if the data is expressed as a standard textual date, it will aso work.

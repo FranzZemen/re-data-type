@@ -1,6 +1,6 @@
 import {ExecutionContextI} from '@franzzemen/app-utility';
-import {StandardDataType} from '../data-type';
-import {DataTypeLiteralParser} from './data-type-literal-parser';
+import {StandardDataType} from '../standard-data-type.js';
+import {DataTypeLiteralParser} from './data-type-literal-parser.js';
 
 export class FloatLiteralParser extends DataTypeLiteralParser {
   constructor() {

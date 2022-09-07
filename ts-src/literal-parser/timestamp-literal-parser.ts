@@ -1,7 +1,9 @@
 import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
-import moment from 'moment';
-import {StandardDataType} from '../data-type';
-import {DataTypeLiteralParser} from './data-type-literal-parser';
+import {StandardDataType} from '../standard-data-type.js';
+import {DataTypeLiteralParser} from './data-type-literal-parser.js';
+
+import {Moment, default as moment} from 'moment';
+const isMoment = moment.isMoment;
 
 
 export class TimestampLiteralParser extends DataTypeLiteralParser {

@@ -1,9 +1,9 @@
 import {ExecutionContextI} from '@franzzemen/app-utility';
-import {StandardDataType} from '../data-type';
-import {StringifyDataTypeOptions} from './stringify-data-type-options';
+import {StandardDataType} from '../standard-data-type.js';
+import {StringifyDataTypeOptions} from './stringify-data-type-options.js';
 
 export interface DataTypeLiteralStringifierI {
-  refName: string;
+  refName: StandardDataType | string;
   stringify(value: any, scope: Map<string, any>, options: StringifyDataTypeOptions, ec?: ExecutionContextI) : string;
 }
 

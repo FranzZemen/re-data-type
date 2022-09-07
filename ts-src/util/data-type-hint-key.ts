@@ -1,4 +1,4 @@
-import {HintKey} from '@franzzemen/re-common/util/hint-key';
+import {HintKey} from '@franzzemen/re-common/util/hint-key.js';
 
 export class DataTypeHintKey extends HintKey {
   public static DataType = 'data-type';

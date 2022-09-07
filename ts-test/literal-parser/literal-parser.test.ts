@@ -1,14 +1,15 @@
 import chai from 'chai';
 import 'mocha';
-import {isMoment} from 'moment';
 import {
-  BooleanLiteralParser, DataTypeScope,
+  BooleanLiteralParser, DataTypeOptions, DataTypeScope,
   DateLiteralParser,
-  FloatLiteralParser, NumberLiteralParser,
+  FloatLiteralParser, NumberLiteralParser, StandardDataType,
   TextLiteralParser, TimeLiteralParser,
   TimestampLiteralParser
-} from '../../publish';
+} from '../../publish/index.js';
 
+import {Moment, default as moment} from 'moment';
+const isMoment = moment.isMoment;
 
 
 let should = chai.should();
@@ -17,9 +18,9 @@ let expect = chai.expect;
 
 
 
-describe('Rules engine tests', () => {
-  describe('Data types tests', () => {
-    describe('Inference tests', () => {
+describe('re tests', () => {
+  describe('data types tests', () => {
+    describe('inference tests', () => {
       it('should infer "hello world" for Text type', done => {
         const dataType = new TextLiteralParser();
         const result = dataType.parse('"Hello World" =', false);
@@ -144,17 +145,6 @@ describe('Rules engine tests', () => {
         result[1].should.equal('Hello World');
         done();
       });
-      /**
-       * Text should always be quoted...there's another reason we dn't allow text ot be unquoted, conflicts with logic
-
-      it('should force parse  helloworld for Text type', done => {
-        const dataType = new TextLiteralParser();
-        const result = dataType.parse('HelloWorld =', true);
-        result[0].should.equal('=');
-        result[1].should.equal('HelloWorld');
-        done();
-      });
-       */
       it('should force parse default "2022-01-01 13:43 >" for Timestamp type', done=> {
         const dataType = new TimestampLiteralParser();
         const result = dataType.parse('"2022-01-01T13:43" >', true);
@@ -252,7 +242,7 @@ describe('Rules engine tests', () => {
         done();
       });
     });
-    describe('Datatype Stack Parser Tests', () => {
+    describe('datatype stack parser tests', () => {
       it('should parse Text with data type provide for "Hello World ~"', done => {
         const parsingScope = new DataTypeScope();
         const result = parsingScope.get(DataTypeScope.DataTypeInferenceStackParser).parse('"Hello World" ~',parsingScope,  'Text');
@@ -350,6 +340,27 @@ describe('Rules engine tests', () => {
         result[1][1].should.equal('Date');
         done();
       });
+    });
+    describe('inference order tests', () => {
+      it('should infer Timestamp as Text by flipping inference order', done => {
+        const options:DataTypeOptions = {
+          inferenceOrder: [
+            StandardDataType.Text,
+            StandardDataType.Timestamp,
+            StandardDataType.Date,
+            StandardDataType.Time,
+            StandardDataType.Float,
+            StandardDataType.Number,
+            StandardDataType.Boolean
+          ]
+        };
+        const parsingScope = new DataTypeScope(options);
+        const result = parsingScope.get(DataTypeScope.DataTypeInferenceStackParser).parse('"2021-01-01" = ',parsingScope,undefined);
+        result[0].should.equal('=');
+        (typeof (result[1][0])).should.equal('string');
+        result[1][1].should.equal('Text');
+        done();
+      })
     });
   });
 });

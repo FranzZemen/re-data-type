@@ -1,5 +1,9 @@
-import {isMoment} from 'moment';
-import {DataType, StandardDataType} from '../data-type';
+import {DataType} from '../data-type.js';
+import {StandardDataType} from '../standard-data-type.js';
+
+import {Moment, default as moment} from 'moment';
+const isMoment = moment.isMoment;
+
 
 export function isNumberDataType(dt: any | NumberDataType): dt is NumberDataType {
   return dt.type === StandardDataType.Number;

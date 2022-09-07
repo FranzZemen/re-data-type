@@ -1,5 +1,5 @@
-import {ExecutionContextI} from '@franzzemen/app-utility';
-import {DataType, StandardDataType} from '../data-type';
+import {DataType} from '../data-type.js';
+import {StandardDataType} from '../standard-data-type.js';
 
 export function isFloatDataType(dt: any | FloatDataType): dt is FloatDataType {
   return dt.type === StandardDataType.Float;

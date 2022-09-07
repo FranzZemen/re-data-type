@@ -1,14 +1,14 @@
 import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
 import {InferenceStackParser} from '@franzzemen/re-common';
-import {StandardDataType} from '../data-type';
-import {BooleanLiteralParser} from './boolean-literal-parser';
-import {DataTypeLiteralParserI} from './data-type-literal-parser';
-import {DateLiteralParser} from './date-literal-parser';
-import {FloatLiteralParser} from './float-literal-parser';
-import {NumberLiteralParser} from './number-literal-parser';
-import {TextLiteralParser} from './text-literal-parser';
-import {TimeLiteralParser} from './time-literal-parser';
-import {TimestampLiteralParser} from './timestamp-literal-parser';
+import {StandardDataType} from '../standard-data-type.js';
+import {BooleanLiteralParser} from './boolean-literal-parser.js';
+import {DataTypeLiteralParserI} from './data-type-literal-parser.js';
+import {DateLiteralParser} from './date-literal-parser.js';
+import {FloatLiteralParser} from './float-literal-parser.js';
+import {NumberLiteralParser} from './number-literal-parser.js';
+import {TextLiteralParser} from './text-literal-parser.js';
+import {TimeLiteralParser} from './time-literal-parser.js';
+import {TimestampLiteralParser} from './timestamp-literal-parser.js';
 
 
 export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeLiteralParserI>{

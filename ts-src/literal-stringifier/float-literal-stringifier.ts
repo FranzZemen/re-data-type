@@ -1,8 +1,8 @@
 import {ExecutionContextI} from '@franzzemen/app-utility';
-import {StandardDataType} from '../data-type';
-import {FloatDataType} from '../standard/float-data-type';
-import {DataTypeLiteralStringifier} from './data-type-literal-stringifier';
-import {StringifyDataTypeOptions} from './stringify-data-type-options';
+import {StandardDataType} from '../standard-data-type.js';
+import {FloatDataType} from '../standard/float-data-type.js';
+import {DataTypeLiteralStringifier} from './data-type-literal-stringifier.js';
+import {StringifyDataTypeOptions} from './stringify-data-type-options.js';
 
 export class FloatLiteralStringifier extends DataTypeLiteralStringifier {
   constructor() {
