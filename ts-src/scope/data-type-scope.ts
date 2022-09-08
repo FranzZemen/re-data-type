@@ -1,5 +1,11 @@
-import {ExecutionContextI} from '@franzzemen/app-utility';
-import {RuleElementModuleReference, Scope} from '@franzzemen/re-common';
+import {CheckFunction, ExecutionContextI} from '@franzzemen/app-utility';
+import {
+  isRuleElementModuleReference,
+  RuleElementInstanceReference,
+  RuleElementModuleReference,
+  Scope
+} from '@franzzemen/re-common';
+import Validator, {ValidationSchema} from 'fastest-validator';
 import {DataTypeI} from '../data-type.js';
 import {BooleanLiteralStringifier} from '../literal-stringifier/boolean-literal-stringifier.js';
 import {DataTypeLiteralStackStringifier} from '../literal-stringifier/data-type-literal-stack-stringifier.js';
@@ -20,8 +26,15 @@ export class DataTypeScope extends Scope {
   public static DataTypeInferenceStackParser = 'DataTypeInferenceStackParser';
   public static DataTypeLiteralStackStringifier = 'DataTypeLiteralStackStringifier';
 
+  private static dataTypeSchema: ValidationSchema = {
+    refName: {type: 'string'},
+    eval: {type: 'function'}
+  }
+  private static checkDataType: CheckFunction = (new Validator()).compile(DataTypeScope.dataTypeSchema);
+
   constructor(options?: DataTypeOptions, parentScope?: Scope, ec?: ExecutionContextI) {
     super(options, parentScope, ec);
+
 
     let inferenceOrder: string[];
     this.set(DataTypeScope.DataTypeFactory, new DataTypeFactory());
@@ -50,8 +63,36 @@ export class DataTypeScope extends Scope {
     return this.getScopedFactoryItem<DataTypeI>(refName, DataTypeScope.DataTypeFactory, searchParent, ec);
   }
 
-  addDataTypes(dataTypes: RuleElementModuleReference[], override = false, overrideDown = false, ec?: ExecutionContextI) {
-    this.addScopedFactoryItems<DataTypeI>(dataTypes,  DataTypeScope.DataTypeFactory, override, overrideDown, ec);
+  addDataTypes(dataTypes: (RuleElementInstanceReference<DataTypeI> | RuleElementModuleReference)[], override = false, overrideDown = false, checks?: CheckFunction[], paramsArrays?: any[][], ec?: ExecutionContextI) {
+    let checksProvided = true;
+    if(!checks) {
+      checksProvided = false;
+      checks = [];
+    }
+    dataTypes.forEach((reference, ndx) => {
+      if (isRuleElementModuleReference(reference)) {
+        // If it is a module, either the schema or a checker function must be provided (not an api convention, just a minimal enforced validatoin
+        if (checksProvided) {
+          if (!reference.module.loadSchema?.validationSchema && !checks[ndx]) {
+            // No schema or check provided, add default.
+            checks[ndx] = DataTypeScope.checkDataType;
+          } else {
+            // Do nothing.  Either there's a schema or a check function
+          }
+        } else {
+          // No checks provided, push a default one.
+          checks.push(DataTypeScope.checkDataType);
+        }
+      } else {
+        if (checksProvided) {
+          // Do nothing, this is an instance ref
+        } else {
+          // It's an instance ref but to keep checks consistent push an undefined.
+          checks.push(undefined);
+        }
+      }
+    });
+    this.addScopedFactoryItems<DataTypeI>(dataTypes,  DataTypeScope.DataTypeFactory, override, overrideDown, checks, paramsArrays, ec);
   }
 
   hasDataType(refName: string, ec?: ExecutionContextI): boolean {
