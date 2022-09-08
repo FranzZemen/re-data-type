@@ -47,14 +47,14 @@ export class DataTypeScope extends Scope {
   }
 
   getDataType(refName: string, searchParent = true, ec?: ExecutionContextI): DataTypeI {
-    return this.getScopedFactory<DataTypeI>(refName, DataTypeScope.DataTypeFactory, searchParent, ec);
+    return this.getScopedFactoryItem<DataTypeI>(refName, DataTypeScope.DataTypeFactory, searchParent, ec);
   }
 
   addDataTypes(dataTypes: RuleElementModuleReference[], override = false, overrideDown = false, ec?: ExecutionContextI) {
-    this.add<DataTypeI>(dataTypes,  DataTypeScope.DataTypeFactory, override, overrideDown, ec);
+    this.addScopedFactoryItems<DataTypeI>(dataTypes,  DataTypeScope.DataTypeFactory, override, overrideDown, ec);
   }
 
   hasDataType(refName: string, ec?: ExecutionContextI): boolean {
-    return this.hasFactory(refName, DataTypeScope.DataTypeFactory, ec);
+    return this.hasScopedFactoryItem(refName, DataTypeScope.DataTypeFactory, ec);
   }
 }

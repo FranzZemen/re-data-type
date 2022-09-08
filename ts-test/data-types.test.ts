@@ -7,8 +7,6 @@ let should = chai.should();
 let expect = chai.expect;
 
 
-
-
 describe('re tests', () => {
   describe('data types tests', () => {
     describe('general tests', () => {
@@ -50,5 +48,6 @@ describe('re tests', () => {
       dataType.refName.should.equal(StandardDataType.Float);
       done();
     });
+
   });
 });
