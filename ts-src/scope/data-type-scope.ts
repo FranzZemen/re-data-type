@@ -63,7 +63,12 @@ export class DataTypeScope extends Scope {
     return this.getScopedFactoryItem<DataTypeI>(refName, DataTypeScope.DataTypeFactory, searchParent, ec);
   }
 
-  addDataTypes(dataTypes: (RuleElementInstanceReference<DataTypeI> | RuleElementModuleReference)[], override = false, overrideDown = false, checks?: CheckFunction[], paramsArrays?: any[][], ec?: ExecutionContextI) {
+  addDataTypes(dataTypes: (RuleElementInstanceReference<DataTypeI> | RuleElementModuleReference)[],
+               override = false,
+               overrideDown = false,
+               checks?: CheckFunction[],
+               paramsArrays?: any[][],
+               ec?: ExecutionContextI) : void | Promise<void> {
     let checksProvided = true;
     if(!checks) {
       checksProvided = false;
@@ -92,7 +97,7 @@ export class DataTypeScope extends Scope {
         }
       }
     });
-    this.addScopedFactoryItems<DataTypeI>(dataTypes,  DataTypeScope.DataTypeFactory, override, overrideDown, checks, paramsArrays, ec);
+    return this.addScopedFactoryItems<DataTypeI>(dataTypes,  DataTypeScope.DataTypeFactory, override, overrideDown, checks, paramsArrays, ec);
   }
 
   hasDataType(refName: string, ec?: ExecutionContextI): boolean {
