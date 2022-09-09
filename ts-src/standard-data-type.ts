@@ -5,5 +5,6 @@ export enum StandardDataType {
   Date = 'Date',
   Time = 'Time',
   Timestamp = 'Timestamp',
-  Float = 'Float'
+  Float = 'Float',
+  Unknown = 'Unknown'
 }
