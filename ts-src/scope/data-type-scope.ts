@@ -1,4 +1,4 @@
-import {CheckFunction, ExecutionContextI} from '@franzzemen/app-utility';
+import {CheckFunction, ExecutionContextI, isLoadSchema} from '@franzzemen/app-utility';
 import {
   isRuleElementModuleReference,
   RuleElementInstanceReference,
@@ -76,9 +76,10 @@ export class DataTypeScope extends Scope {
     }
     dataTypes.forEach((reference, ndx) => {
       if (isRuleElementModuleReference(reference)) {
-        // If it is a module, either the schema or a checker function must be provided (not an api convention, just a minimal enforced validatoin
+        // If it is a module, either the schema or a checker function must be provided (not an api convention, just a minimal enforced validation
         if (checksProvided) {
-          if (!reference.module.loadSchema?.validationSchema && !checks[ndx]) {
+          const validationSchemaProvided = reference.module.loadSchema && isLoadSchema(reference.module.loadSchema) && reference.module.loadSchema.validationSchema;
+          if (!validationSchemaProvided && !checks[ndx]) {
             // No schema or check provided, add default.
             checks[ndx] = DataTypeScope.checkDataType;
           } else {
