@@ -51,7 +51,7 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
     }
   }
 
-  parse(remaining: string, scope: Map<string, any>, dataTypeRef: string, execContext?: ExecutionContextI | undefined): [string, [any, string]] {
+  parse(remaining: string, scope: Map<string, any>, dataTypeRef: string, execContext?: ExecutionContextI): [string, [any, string]] {
     const log = new LoggerAdapter(execContext, 'rules-engine', 'data-type-inference-stack-parser', 'parse');
     if(dataTypeRef) {
       const parser = this.parserMap.get(dataTypeRef);
@@ -75,8 +75,7 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
     }
   }
 
-
-  addParser(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, override?: boolean, check?: CheckFunction, paramsArray?: any[], ec?: ExecutionContextI): Promise<DataTypeLiteralParserI> | DataTypeLiteralParserI {
+  addParser(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, override?: boolean, check?: CheckFunction, paramsArray?: any[], ec?: ExecutionContextI): DataTypeLiteralParserI | Promise<DataTypeLiteralParserI> {
     if(isRuleElementModuleReference(stackedParser)) {
       if(stackedParser.module.loadSchema === undefined && check === undefined) {
         check = this.checkFunction;

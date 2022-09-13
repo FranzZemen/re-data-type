@@ -1,6 +1,6 @@
 {
   "name": "@franzzemen/re-data-type",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Rules Engine Data Types",
   "type": "module",
   "main": "index.js",
@@ -32,8 +32,8 @@
     "typescript": "^4.8.3"
   },
   "dependencies": {
-    "@franzzemen/app-utility": "2.2.2",
-    "@franzzemen/re-common": "3.0.0",
+    "@franzzemen/app-utility": "2.3.1",
+    "@franzzemen/re-common": "3.0.1",
     "fastest-validator": "^1.15.0",
     "moment": "^2.29.4",
     "object-path": "^0.11.8",
