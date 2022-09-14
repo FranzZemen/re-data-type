@@ -1,4 +1,5 @@
 import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
+import {logErrorAndThrow} from '@franzzemen/app-utility/enhanced-error.js';
 import {StandardDataType} from '../standard-data-type.js';
 import {DataTypeLiteralParser} from './data-type-literal-parser.js';
 
@@ -11,18 +12,15 @@ export class TimeLiteralParser extends DataTypeLiteralParser {
     super(StandardDataType.Time);
   }
 
-  parse(remaining: string, forceType: boolean, execContext?:ExecutionContextI): [string, any] {
-    const log = new LoggerAdapter(execContext, 'rules-engine', 'time-data-type.ts', 'inferValue');
+  parse(remaining: string, forceType: boolean, ec?:ExecutionContextI): [string, any] {
+    const log = new LoggerAdapter(ec, 'rules-engine', 'time-data-type.ts', 'inferValue');
     // Quoted version
     let result = /^("[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
     if(result) {
       const timeMoment = moment(result[1], 'HH:mm:ss');
       if (typeof timeMoment === 'string' && timeMoment === 'Moment<Invalid date>') {
         const error = new Error(`Note a date/time format near '${remaining}'`);
-        // -----
-        log.error(error);
-        // -----
-        throw error;
+        logErrorAndThrow(error, log, ec);
       } else {
         return [result[2].trim(),timeMoment];
       }
@@ -33,10 +31,7 @@ export class TimeLiteralParser extends DataTypeLiteralParser {
       const timeMoment = moment(result[1], 'HH:mm:ss');
       if (typeof timeMoment === 'string' && timeMoment === 'Moment<Invalid date>') {
         const error = new Error(`Note a date/time format near '${remaining}'`);
-        // -----
-        log.error(error);
-        // -----
-        throw error;
+        logErrorAndThrow(error, log, ec);
       } else {
         return [result[2].trim(),timeMoment];
       }
@@ -60,10 +55,7 @@ export class TimeLiteralParser extends DataTypeLiteralParser {
         const timestampMoment = moment(result[1]);
         if (typeof timestampMoment === 'string' && timestampMoment === 'Moment<Invalid date>') {
           const error = new Error(`Note a date/time format near '${remaining}'`);
-          // -----
-          log.error(error);
-          // -----
-          throw error;
+          logErrorAndThrow(error, log, ec);
         } else {
           return [result[2].trim(), timestampMoment];
         }

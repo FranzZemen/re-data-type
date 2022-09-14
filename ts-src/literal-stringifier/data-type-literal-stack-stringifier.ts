@@ -1,3 +1,4 @@
+import {logErrorAndThrow} from '@franzzemen/app-utility/enhanced-error.js';
 import Validator from 'fastest-validator';
 import {isPromise} from 'node:util/types';
 import {CheckFunction, ExecutionContextI, loadFromModule, LoggerAdapter} from '@franzzemen/app-utility';
@@ -54,9 +55,6 @@ export class DataTypeLiteralStackStringifier implements ScopedFactory<DataTypeLi
               };
               this.stringifierMap.set(stringifier.refName, ruleElementRef);
               return instance;
-            }, err => {
-              log.error(err);
-              throw err;
             })
         } else {
           this.stringifierMap.set(stringifier.refName, {moduleRef: stringifier, instanceRef: {refName: stringifier.refName, instance: dataTypeLiteralStringifierOrPromise}});
