@@ -68,7 +68,7 @@ export class DataTypeScope extends Scope {
                overrideDown = false,
                checks?: CheckFunction[],
                paramsArrays?: any[][],
-               ec?: ExecutionContextI) : void | Promise<void> {
+               ec?: ExecutionContextI) : DataTypeI[] | Promise<DataTypeI[]> {
     let checksProvided = true;
     if(!checks) {
       checksProvided = false;
