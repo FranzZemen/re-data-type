@@ -29,7 +29,7 @@ export class DataTypeLiteralStackStringifier implements ScopedFactory<DataTypeLi
     return stringifier.stringify(value, scope, stringifyDataTypeOptions, ec);
   }
 
-  addStringifier(stringifier: DataTypeLiteralStringifierI | RuleElementModuleReference, override = false, check?: CheckFunction, paramsArray?: any[], ec?: ExecutionContextI): DataTypeLiteralStringifierI | Promise<DataTypeLiteralStringifierI> {
+  addStringifier(stringifier: DataTypeLiteralStringifierI | RuleElementModuleReference, override = false,  ec?: ExecutionContextI): DataTypeLiteralStringifierI | Promise<DataTypeLiteralStringifierI> {
     const log = new LoggerAdapter(ec, 'rules-engine', 'data-type-literal-stack-stringifier', 'addStringifier');
     const dataTypeLiteralStringifier = this.stringifierMap.get(stringifier.refName)?.instanceRef?.instance;
 
@@ -42,10 +42,10 @@ export class DataTypeLiteralStackStringifier implements ScopedFactory<DataTypeLi
       let dataTypeLiteralStringifierOrPromise: DataTypeLiteralStringifierI | Promise<DataTypeLiteralStringifierI>;
 
       if (isRuleElementModuleReference(stringifier)) {
-        if(stringifier.module.loadSchema === undefined && check === undefined) {
-          check = this.check;
+        if(stringifier.module.loadSchema === undefined) {
+          stringifier.module.loadSchema = this.check;
         }
-        dataTypeLiteralStringifierOrPromise = loadFromModule<DataTypeLiteralStringifierI>(stringifier.module, paramsArray, check, ec);
+        dataTypeLiteralStringifierOrPromise = loadFromModule<DataTypeLiteralStringifierI>(stringifier.module, ec);
         if (isPromise(dataTypeLiteralStringifierOrPromise)) {
           return dataTypeLiteralStringifierOrPromise
             .then(instance => {
@@ -86,9 +86,9 @@ export class DataTypeLiteralStackStringifier implements ScopedFactory<DataTypeLi
   }
 
 
-  register(reference: DataTypeLiteralStringifierI | RuleElementModuleReference | RuleElementInstanceReference<DataTypeLiteralStringifierI>, override, check?: CheckFunction, paramsArray?: any[], ec?: ExecutionContextI): DataTypeLiteralStringifierI | Promise<DataTypeLiteralStringifierI> {
+  register(reference: DataTypeLiteralStringifierI | RuleElementModuleReference | RuleElementInstanceReference<DataTypeLiteralStringifierI>, override,  ec?: ExecutionContextI): DataTypeLiteralStringifierI | Promise<DataTypeLiteralStringifierI> {
     if(!isRuleElementInstanceReference(reference)) {
-      return this.addStringifier(reference, override = false, check, paramsArray, ec);
+      return this.addStringifier(reference, override = false,  ec);
     } else {
       throw new Error('Not applicable');
     }

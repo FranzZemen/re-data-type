@@ -66,39 +66,8 @@ export class DataTypeScope extends Scope {
   addDataTypes(dataTypes: (RuleElementInstanceReference<DataTypeI> | RuleElementModuleReference)[],
                override = false,
                overrideDown = false,
-               checks?: CheckFunction[],
-               paramsArrays?: any[][],
                ec?: ExecutionContextI) : DataTypeI[] | Promise<DataTypeI[]> {
-    let checksProvided = true;
-    if(!checks) {
-      checksProvided = false;
-      checks = [];
-    }
-    dataTypes.forEach((reference, ndx) => {
-      if (isRuleElementModuleReference(reference)) {
-        // If it is a module, either the schema or a checker function must be provided (not an api convention, just a minimal enforced validation
-        if (checksProvided) {
-          const validationSchemaProvided = reference.module.loadSchema && isLoadSchema(reference.module.loadSchema) && reference.module.loadSchema.validationSchema;
-          if (!validationSchemaProvided && !checks[ndx]) {
-            // No schema or check provided, add default.
-            checks[ndx] = DataTypeScope.checkDataType;
-          } else {
-            // Do nothing.  Either there's a schema or a check function
-          }
-        } else {
-          // No checks provided, push a default one.
-          checks.push(DataTypeScope.checkDataType);
-        }
-      } else {
-        if (checksProvided) {
-          // Do nothing, this is an instance ref
-        } else {
-          // It's an instance ref but to keep checks consistent push an undefined.
-          checks.push(undefined);
-        }
-      }
-    });
-    return this.addScopedFactoryItems<DataTypeI>(dataTypes,  DataTypeScope.DataTypeFactory, override, overrideDown, checks, paramsArrays, ec);
+    return this.addScopedFactoryItems<DataTypeI>(dataTypes,  DataTypeScope.DataTypeFactory, override, overrideDown, ec);
   }
 
   hasDataType(refName: string, ec?: ExecutionContextI): boolean {

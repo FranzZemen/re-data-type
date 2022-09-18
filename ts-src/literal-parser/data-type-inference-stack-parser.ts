@@ -23,25 +23,25 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
       standardDataTypeInferenceStack.forEach(inference => {
         switch (inference) {
           case StandardDataType.Text:
-            this.addParser(new TextLiteralParser(), false, undefined, undefined, ec);
+            this.addParser(new TextLiteralParser(), false, ec);
             break;
           case StandardDataType.Float:
-            this.addParser(new FloatLiteralParser(), false, undefined, undefined, ec);
+            this.addParser(new FloatLiteralParser(), false, ec);
             break;
           case StandardDataType.Number:
-            this.addParser(new NumberLiteralParser(), false, undefined, undefined, ec);
+            this.addParser(new NumberLiteralParser(), false, ec);
             break;
           case StandardDataType.Boolean:
-            this.addParser(new BooleanLiteralParser(), false, undefined, undefined, ec);
+            this.addParser(new BooleanLiteralParser(), false,  ec);
             break;
           case StandardDataType.Timestamp:
-            this.addParser(new TimestampLiteralParser(), false, undefined, undefined, ec);
+            this.addParser(new TimestampLiteralParser(), false, ec);
             break;
           case StandardDataType.Date:
-            this.addParser(new DateLiteralParser(), false, undefined, undefined, ec);
+            this.addParser(new DateLiteralParser(), false,  ec);
             break;
           case StandardDataType.Time:
-            this.addParser(new TimeLiteralParser(), false, undefined, undefined, ec);
+            this.addParser(new TimeLiteralParser(), false, ec);
             break;
         }
       });
@@ -75,21 +75,21 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
     }
   }
 
-  addParser(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, override?: boolean, check?: CheckFunction, paramsArray?: any[], ec?: ExecutionContextI): DataTypeLiteralParserI | Promise<DataTypeLiteralParserI> {
+  addParser(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, override?: boolean, ec?: ExecutionContextI): DataTypeLiteralParserI | Promise<DataTypeLiteralParserI> {
     if(isRuleElementModuleReference(stackedParser)) {
-      if(stackedParser.module.loadSchema === undefined && check === undefined) {
-        check = this.checkFunction;
+      if(stackedParser.module.loadSchema === undefined) {
+        stackedParser.module.loadSchema = this.checkFunction;
       }
     }
-    return super.addParser(stackedParser, override, check, paramsArray, ec);
+    return super.addParser(stackedParser, override, ec);
   }
 
-  addParserAtStackIndex(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, stackIndex: number, check?: CheckFunction, paramsArray?: any[], ec?: ExecutionContextI): boolean | Promise<boolean> {
+  addParserAtStackIndex(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, stackIndex: number, ec?: ExecutionContextI): boolean | Promise<boolean> {
     if(isRuleElementModuleReference(stackedParser)) {
-      if(stackedParser.module.loadSchema === undefined && check === undefined) {
-        check = this.checkFunction;
+      if(stackedParser.module.loadSchema === undefined) {
+        stackedParser.module.loadSchema = this.checkFunction;
       }
     }
-    return super.addParserAtStackIndex(stackedParser, stackIndex, check, paramsArray, ec);
+    return super.addParserAtStackIndex(stackedParser, stackIndex, ec);
   }
 }
