@@ -82,7 +82,7 @@ export class DataTypeScope extends Scope {
                        override = false,
                        overrideDown = false,
                        ec?: ExecutionContextI) {
-    return this.addInstanceResolver(moduleResolver,dataTypes, DataTypeScope.DataTypeFactory, override, overrideDown, ec);
+    return this.addScopedFactoryItemsResolver(moduleResolver,dataTypes, DataTypeScope.DataTypeFactory, override, overrideDown, ec);
   }
 
   hasDataType(refName: string, ec?: ExecutionContextI): boolean {
