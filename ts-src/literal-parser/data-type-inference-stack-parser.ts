@@ -1,4 +1,5 @@
-import {CheckFunction, ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
+import {CheckFunction, ExecutionContextI, LoggerAdapter, ModuleResolver} from '@franzzemen/app-utility';
+import {EnhancedError, logErrorAndThrow} from '@franzzemen/app-utility/enhanced-error.js';
 import {InferenceStackParser, isRuleElementModuleReference, RuleElementModuleReference} from '@franzzemen/re-common';
 import Validator from 'fastest-validator';
 import {StandardDataType} from '../standard-data-type.js';
@@ -10,6 +11,8 @@ import {NumberLiteralParser} from './number-literal-parser.js';
 import {TextLiteralParser} from './text-literal-parser.js';
 import {TimeLiteralParser} from './time-literal-parser.js';
 import {TimestampLiteralParser} from './timestamp-literal-parser.js';
+
+export type DataTypeInferenceStackParserResult = [remaining: string, result: [value: any, parserRefName: string]];
 
 
 export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeLiteralParserI>{
@@ -51,22 +54,32 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
     }
   }
 
-  parse(remaining: string, scope: Map<string, any>, dataTypeRef: string, execContext?: ExecutionContextI): [string, [any, string]] {
-    const log = new LoggerAdapter(execContext, 'rules-engine', 'data-type-inference-stack-parser', 'parse');
+  parseAndResolve(remaining: string, scope: Map<string, any>, dataTypeRef: string, ec?: ExecutionContextI): DataTypeInferenceStackParserResult {
+    const moduleResolver = new ModuleResolver();
+    const result = this.parse(moduleResolver,remaining,scope,dataTypeRef,ec);
+    if(moduleResolver.hasPendingResolutions()) {
+      const log = new LoggerAdapter(ec, 're-data-type','data-type-inference-stack-parser', 'parseAndResolve')
+      logErrorAndThrow(new EnhancedError('Datatype literal parsing does not require resolutions'),log, ec);
+    }
+    return result;
+  }
+
+  parse(moduleResolver: ModuleResolver, remaining: string, scope: Map<string, any>, dataTypeRef: string, ec?: ExecutionContextI): DataTypeInferenceStackParserResult {
+    const log = new LoggerAdapter(ec, 'rules-engine', 'data-type-inference-stack-parser', 'parse');
     if(dataTypeRef) {
       const parser = this.parserMap.get(dataTypeRef);
       if(!parser) {
         log.warn(`No parser for ${dataTypeRef}, ignoring`);
         return [remaining, [undefined, undefined]];
       } else {
-        const parsingResult = parser.instanceRef.instance.parse(remaining, true, execContext);
+        const parsingResult = parser.instanceRef.instance.parse(remaining, true, ec);
         return [parsingResult[0], [parsingResult[1], dataTypeRef]];
       }
     } else {
       for(let i = 0; i < this.parserInferenceStack.length; i++) {
         const parser = this.parserMap.get(this.parserInferenceStack[i]);
         let value: any;
-        [remaining, value] = parser.instanceRef.instance.parse(remaining, false, execContext);
+        [remaining, value] = parser.instanceRef.instance.parse(remaining, false, ec);
         if(value !== undefined) {
           return [remaining, [value, this.parserInferenceStack[i]]];
         }

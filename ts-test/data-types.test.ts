@@ -7,9 +7,9 @@ let should = chai.should();
 let expect = chai.expect;
 
 
-describe('re tests', () => {
+describe('re-data-type tests', () => {
   describe('data types tests', () => {
-    describe('general tests', () => {
+    describe('data-type.test', () => {
       it('should identify a standard data type when passed a standard data type', done => {
         const result = isStandardDataType(StandardDataType.Time);
         expect(result).to.exist;
