@@ -1,12 +1,23 @@
-import {CheckFunction, ExecutionContextI, isLoadSchema} from '@franzzemen/app-utility';
 import {
+  CheckFunction,
+  ExecutionContextI,
+  LoadPackageType,
+  LoggerAdapter, ModuleResolutionResult, ModuleResolutionSetter,
+  ModuleResolver
+} from '@franzzemen/app-utility';
+import {EnhancedError, logErrorAndThrow} from '@franzzemen/app-utility/enhanced-error.js';
+import {
+  isRuleElementInstanceReference,
   isRuleElementModuleReference,
   RuleElementInstanceReference,
   RuleElementModuleReference,
   Scope
 } from '@franzzemen/re-common';
 import Validator, {ValidationSchema} from 'fastest-validator';
+import {isPromise} from 'node:util/types';
 import {DataTypeI} from '../data-type.js';
+import {DataTypeFactory} from '../factory/data-type-factory.js';
+import {DataTypeInferenceStackParser} from '../literal-parser/data-type-inference-stack-parser.js';
 import {BooleanLiteralStringifier} from '../literal-stringifier/boolean-literal-stringifier.js';
 import {DataTypeLiteralStackStringifier} from '../literal-stringifier/data-type-literal-stack-stringifier.js';
 import {DateLiteralStringifier} from '../literal-stringifier/date-literal-stringifier.js';
@@ -15,10 +26,7 @@ import {NumberLiteralStringifier} from '../literal-stringifier/number-literal-st
 import {TextLiteralStringifier} from '../literal-stringifier/text-literal-stringifier.js';
 import {TimeLiteralStringifier} from '../literal-stringifier/time-literal-stringifier.js';
 import {TimestampLiteralStringifier} from '../literal-stringifier/timestamp-literal-stringifier.js';
-import {StandardDataType} from '../standard-data-type';
 import {DataTypeOptions, defaultDataTypeInferenceOrder} from './data-type-options.js';
-import {DataTypeFactory} from '../factory/data-type-factory.js';
-import {DataTypeInferenceStackParser} from '../literal-parser/data-type-inference-stack-parser.js';
 
 export class DataTypeScope extends Scope {
   public static DataTypeFactory = 'DataTypeFactory';
@@ -29,7 +37,7 @@ export class DataTypeScope extends Scope {
   private static dataTypeSchema: ValidationSchema = {
     refName: {type: 'string'},
     eval: {type: 'function'}
-  }
+  };
   private static checkDataType: CheckFunction = (new Validator()).compile(DataTypeScope.dataTypeSchema);
 
   constructor(options?: DataTypeOptions, parentScope?: Scope, ec?: ExecutionContextI) {
@@ -38,7 +46,7 @@ export class DataTypeScope extends Scope {
 
     let inferenceOrder: string[];
     this.set(DataTypeScope.DataTypeFactory, new DataTypeFactory());
-    if(options?.inferenceOrder?.length > 0) {
+    if (options?.inferenceOrder?.length > 0) {
       inferenceOrder = options.inferenceOrder;
       this.set(DataTypeScope.DataTypeInferenceStack, options.inferenceOrder);
     } else {
@@ -66,8 +74,45 @@ export class DataTypeScope extends Scope {
   addDataTypes(dataTypes: (RuleElementInstanceReference<DataTypeI> | RuleElementModuleReference)[],
                override = false,
                overrideDown = false,
-               ec?: ExecutionContextI) : DataTypeI[] | Promise<DataTypeI[]> {
-    return this.addScopedFactoryItems<DataTypeI>(dataTypes,  DataTypeScope.DataTypeFactory, override, overrideDown, ec);
+               ec?: ExecutionContextI): DataTypeI[] | Promise<DataTypeI[]> {
+
+    return this.addScopedFactoryItems<DataTypeI>(dataTypes, DataTypeScope.DataTypeFactory, override, overrideDown, ec);
+  }
+
+  resolveAddDataType: ModuleResolutionSetter = (refName: string, instance: DataTypeI, def: ModuleResolutionResult, override: boolean, overrideDown: boolean, ec) => {
+    const addResult = this.addDataTypes([{refName, instance}], override, overrideDown, ec);
+    if(addResult && !isPromise(addResult)) {
+      return true;
+    } else {
+      logErrorAndThrow(new EnhancedError('Unexpected'), new LoggerAdapter(ec, 're-data-type', 'data-type-scope', 'resolveAddDataType'), ec);
+    }
+  }
+
+  addDataTypesResolver(moduleResolver: ModuleResolver,
+                       dataTypes: (RuleElementInstanceReference<DataTypeI> | RuleElementModuleReference)[],
+                       override = false,
+                       overrideDown = false,
+                       ec?: ExecutionContextI) {
+
+    const instanceRefs: RuleElementInstanceReference<DataTypeI>[] = dataTypes.filter(dataType => isRuleElementInstanceReference(dataType)) as RuleElementInstanceReference<DataTypeI>[];
+    const moduleRefs: RuleElementModuleReference[] = dataTypes.filter(dataType => isRuleElementModuleReference(dataType)) as RuleElementModuleReference[];
+    const instanceResult = this.addDataTypes(instanceRefs, override, overrideDown, ec);
+    if (isPromise(instanceResult)) {
+      logErrorAndThrow(new EnhancedError('Should not be a promise'), new LoggerAdapter(ec, 're-data-type', 'data-type-scope', 'addDataTypesResolver'));
+    }
+    moduleRefs.forEach(moduleRef => {
+      if(!moduleResolver.hasResolution(moduleRef.refName)) {
+        moduleResolver.add({
+          refName: moduleRef.refName,
+          module: moduleRef.module,
+          ownerIsObject: true,
+          ownerThis: this,
+          ownerSetter: 'resolveAddDataType',
+          loadPackageType: LoadPackageType.package,
+          paramsArray: [ec],
+        }, ec);
+      }
+    })
   }
 
   hasDataType(refName: string, ec?: ExecutionContextI): boolean {
