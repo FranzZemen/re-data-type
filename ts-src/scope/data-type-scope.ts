@@ -42,8 +42,6 @@ export class DataTypeScope extends Scope {
 
   constructor(options?: DataTypeOptions, parentScope?: Scope, ec?: ExecutionContextI) {
     super(options, parentScope, ec);
-
-
     let inferenceOrder: string[];
     this.set(DataTypeScope.DataTypeFactory, new DataTypeFactory());
     if (options?.inferenceOrder?.length > 0) {
@@ -79,40 +77,12 @@ export class DataTypeScope extends Scope {
     return this.addScopedFactoryItems<DataTypeI>(dataTypes, DataTypeScope.DataTypeFactory, override, overrideDown, ec);
   }
 
-  resolveAddDataType: ModuleResolutionSetter = (refName: string, instance: DataTypeI, def: ModuleResolutionResult, override: boolean, overrideDown: boolean, ec) => {
-    const addResult = this.addDataTypes([{refName, instance}], override, overrideDown, ec);
-    if(addResult && !isPromise(addResult)) {
-      return true;
-    } else {
-      logErrorAndThrow(new EnhancedError('Unexpected'), new LoggerAdapter(ec, 're-data-type', 'data-type-scope', 'resolveAddDataType'), ec);
-    }
-  }
-
   addDataTypesResolver(moduleResolver: ModuleResolver,
                        dataTypes: (RuleElementInstanceReference<DataTypeI> | RuleElementModuleReference)[],
                        override = false,
                        overrideDown = false,
                        ec?: ExecutionContextI) {
-
-    const instanceRefs: RuleElementInstanceReference<DataTypeI>[] = dataTypes.filter(dataType => isRuleElementInstanceReference(dataType)) as RuleElementInstanceReference<DataTypeI>[];
-    const moduleRefs: RuleElementModuleReference[] = dataTypes.filter(dataType => isRuleElementModuleReference(dataType)) as RuleElementModuleReference[];
-    const instanceResult = this.addDataTypes(instanceRefs, override, overrideDown, ec);
-    if (isPromise(instanceResult)) {
-      logErrorAndThrow(new EnhancedError('Should not be a promise'), new LoggerAdapter(ec, 're-data-type', 'data-type-scope', 'addDataTypesResolver'));
-    }
-    moduleRefs.forEach(moduleRef => {
-      if(!moduleResolver.hasResolution(moduleRef.refName)) {
-        moduleResolver.add({
-          refName: moduleRef.refName,
-          module: moduleRef.module,
-          ownerIsObject: true,
-          ownerThis: this,
-          ownerSetter: 'resolveAddDataType',
-          loadPackageType: LoadPackageType.package,
-          paramsArray: [ec],
-        }, ec);
-      }
-    })
+    return this.addInstanceResolver(moduleResolver,dataTypes, DataTypeScope.DataTypeFactory, override, overrideDown, ec);
   }
 
   hasDataType(refName: string, ec?: ExecutionContextI): boolean {
