@@ -8,4 +8,6 @@ export class DataTypeHintKey extends HintKey {
   public static DataTypeConstructorName = 'data-type-constructor-name';
   public static DataTypeModuleResolutionName = 'data-type-module-resolution';
   public static DataTypeLoadSchemaName = 'data-type-load-schema';
+  public static DataTypeModuleOverride = 'data-type-module-override';
+  public static DataTypeModuleOverrideDown = 'data-type-module-override-down';
 }
