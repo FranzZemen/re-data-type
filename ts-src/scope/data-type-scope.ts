@@ -2,7 +2,7 @@ import {
   CheckFunction,
   ExecutionContextI,
   LoadPackageType,
-  LoggerAdapter, ModuleResolutionResult, ModuleResolutionSetter,
+  LoggerAdapter, ModuleResolutionAction, ModuleResolutionResult, ModuleResolutionSetter,
   ModuleResolver
 } from '@franzzemen/app-utility';
 import {EnhancedError, logErrorAndThrow} from '@franzzemen/app-utility/enhanced-error.js';
@@ -69,11 +69,11 @@ export class DataTypeScope extends Scope {
     return this.getScopedFactoryItem<DataTypeI>(refName, DataTypeScope.DataTypeFactory, searchParent, ec);
   }
 
-  addDataType(dataType: RuleElementReference<DataTypeI>, ec) {
-    return this.addRuleElementReferenceItem<DataTypeI>(dataType, ec);
+  addDataType(dataType: RuleElementReference<DataTypeI>, action?: ModuleResolutionAction, ec?: ExecutionContextI) {
+    return this.addRuleElementReferenceItem<DataTypeI>(dataType, DataTypeScope.DataTypeFactory, undefined, ec);
   }
-  addDataTypes(dataTypes: RuleElementReference<DataTypeI>[], ec?: ExecutionContextI) {
-    return this.addRuleElementReferenceItems<DataTypeI>(dataTypes, DataTypeScope.DataTypeFactory, ec);
+  addDataTypes(dataTypes: RuleElementReference<DataTypeI>[], actions?: ModuleResolutionAction[], ec?: ExecutionContextI) {
+    return this.addRuleElementReferenceItems<DataTypeI>(dataTypes, DataTypeScope.DataTypeFactory, undefined, ec);
   }
 
   hasDataType(refName: string, ec?: ExecutionContextI): boolean {
