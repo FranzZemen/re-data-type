@@ -15,13 +15,13 @@ export class DataTypeFactory extends RuleElementFactory<DataTypeI> {
   constructor(private registerStandardDataTypes: boolean = true, execContext?: ExecutionContextI) {
     super();
     if(registerStandardDataTypes) {
-      this.register({refName: StandardDataType.Timestamp, instance: new TimestampDataType()});
-      this.register({refName: StandardDataType.Date, instance: new DateDataType()});
-      this.register({refName: StandardDataType.Time, instance: new TimeDataType()});
-      this.register({refName: StandardDataType.Text, instance: new TextDataType()});
-      this.register({refName: StandardDataType.Float, instance: new FloatDataType()});
-      this.register({refName: StandardDataType.Number, instance: new NumberDataType()});
-      this.register({refName: StandardDataType.Boolean, instance: new BooleanDataType()});
+      this.register({instanceRef:{refName: StandardDataType.Timestamp, instance: new TimestampDataType()}});
+      this.register({instanceRef:{refName: StandardDataType.Date, instance: new DateDataType()}});
+      this.register({instanceRef:{refName: StandardDataType.Time, instance: new TimeDataType()}});
+      this.register({instanceRef:{refName: StandardDataType.Text, instance: new TextDataType()}});
+      this.register({instanceRef:{refName: StandardDataType.Float, instance: new FloatDataType()}});
+      this.register({instanceRef:{refName: StandardDataType.Number, instance: new NumberDataType()}});
+      this.register({instanceRef:{refName: StandardDataType.Boolean, instance: new BooleanDataType()}});
     }
   }
 
@@ -30,7 +30,7 @@ export class DataTypeFactory extends RuleElementFactory<DataTypeI> {
   }
 
   registerDataType(dataType: DataTypeI, ec?: ExecutionContextI) {
-    this.register({refName: dataType.refName, instance: dataType});
+    this.register({instanceRef:{refName: dataType.refName, instance: dataType}});
   }
 }
 

@@ -245,7 +245,7 @@ describe('re-data-type tests', () => {
     describe('datatype stack parser tests', () => {
       it('should parse Text with data type provide for "Hello World ~"', done => {
         const parsingScope = new DataTypeScope();
-        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parseAndResolve('"Hello World" ~', parsingScope, 'Text');
+        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('"Hello World" ~', parsingScope, 'Text');
         result[0].should.equal('~');
         result[1][0].should.equal('Hello World');
         result[1][1].should.equal('Text');
@@ -253,7 +253,7 @@ describe('re-data-type tests', () => {
       });
       it('should parse Float with data type provide for 3.0 =', done => {
         const parsingScope = new DataTypeScope();
-        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parseAndResolve('3.0 = ', parsingScope, 'Float');
+        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('3.0 = ', parsingScope, 'Float');
         result[0].should.equal('=');
         result[1][0].should.equal(3);
         result[1][1].should.equal('Float');
@@ -261,7 +261,7 @@ describe('re-data-type tests', () => {
       });
       it('should parse Number with data type provide for 3 =', done => {
         const parsingScope = new DataTypeScope();
-        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parseAndResolve('3 = ', parsingScope, 'Number');
+        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('3 = ', parsingScope, 'Number');
         result[0].should.equal('=');
         result[1][0].should.equal(3);
         result[1][1].should.equal('Number');
@@ -269,7 +269,7 @@ describe('re-data-type tests', () => {
       });
       it('should parse Boolean with data type provided for true =', done => {
         const parsingScope = new DataTypeScope();
-        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parseAndResolve('true = ', parsingScope, 'Boolean');
+        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('true = ', parsingScope, 'Boolean');
         result[0].should.equal('=');
         result[1][0].should.equal(true);
         result[1][1].should.equal('Boolean');
@@ -278,7 +278,7 @@ describe('re-data-type tests', () => {
       // TODO: Time, Date, Timestamp...but enough tests done at top to be ok
       it('should infer stack & parse to Number for no datatype hint "123 ="', done => {
         const parsingScope = new DataTypeScope();
-        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parseAndResolve('123 = ', parsingScope, undefined);
+        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('123 = ', parsingScope, undefined);
         result[0].should.equal('=');
         result[1][0].should.equal(123);
         result[1][1].should.equal('Number');
@@ -286,7 +286,7 @@ describe('re-data-type tests', () => {
       });
       it('should infer stack & parse to Float for no datatype hint "123.0 ="', done => {
         const parsingScope = new DataTypeScope();
-        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parseAndResolve('123.0 = ', parsingScope, undefined);
+        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('123.0 = ', parsingScope, undefined);
         result[0].should.equal('=');
         result[1][0].should.equal(123);
         result[1][1].should.equal('Float');
@@ -294,7 +294,7 @@ describe('re-data-type tests', () => {
       });
       it('should infer stack & parse to Boolean for no datatype hint true =', done => {
         const parsingScope = new DataTypeScope();
-        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parseAndResolve('true = ', parsingScope, undefined);
+        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('true = ', parsingScope, undefined);
         result[0].should.equal('=');
         result[1][0].should.equal(true);
         result[1][1].should.equal('Boolean');
@@ -302,7 +302,7 @@ describe('re-data-type tests', () => {
       });
       it('should infer stack & parse to Boolean for no datatype hint false =', done => {
         const parsingScope = new DataTypeScope();
-        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parseAndResolve('false = ', parsingScope, undefined);
+        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('false = ', parsingScope, undefined);
         result[0].should.equal('=');
         result[1][0].should.equal(false);
         result[1][1].should.equal('Boolean');
@@ -310,7 +310,7 @@ describe('re-data-type tests', () => {
       });
       it('should infer stack & parse to Text for no datatype hint "someText" =', done => {
         const parsingScope = new DataTypeScope();
-        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parseAndResolve('"someText" = ', parsingScope, undefined);
+        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('"someText" = ', parsingScope, undefined);
         result[0].should.equal('=');
         result[1][0].should.equal('someText');
         result[1][1].should.equal('Text');
@@ -318,7 +318,7 @@ describe('re-data-type tests', () => {
       });
       it('should infer stack & parse to Timestamp for no datatype hint "2021-01-01 13:49" =', done => {
         const parsingScope = new DataTypeScope();
-        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parseAndResolve('"2021-01-01 13:49:00" = ', parsingScope, undefined);
+        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('"2021-01-01 13:49:00" = ', parsingScope, undefined);
         result[0].should.equal('=');
         (typeof (result[1][0])).should.equal('object');
         result[1][1].should.equal('Timestamp');
@@ -326,7 +326,7 @@ describe('re-data-type tests', () => {
       });
       it('should infer stack & parse to Time for no datatype hint "13:49" =', done => {
         const parsingScope = new DataTypeScope();
-        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parseAndResolve('"13:49:00" = ', parsingScope, undefined);
+        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('"13:49:00" = ', parsingScope, undefined);
         result[0].should.equal('=');
         (typeof (result[1][0])).should.equal('object');
         result[1][1].should.equal('Time');
@@ -334,7 +334,7 @@ describe('re-data-type tests', () => {
       });
       it('should infer stack & parse to Date for no datatype hint "2021-01-01" =', done => {
         const parsingScope = new DataTypeScope();
-        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parseAndResolve('"2021-01-01" = ', parsingScope, undefined);
+        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('"2021-01-01" = ', parsingScope, undefined);
         result[0].should.equal('=');
         (typeof (result[1][0])).should.equal('object');
         result[1][1].should.equal('Date');
@@ -355,7 +355,7 @@ describe('re-data-type tests', () => {
           ]
         };
         const parsingScope = new DataTypeScope(options);
-        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parseAndResolve('"2021-01-01" = ', parsingScope, undefined);
+        const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('"2021-01-01" = ', parsingScope, undefined);
         result[0].should.equal('=');
         (typeof (result[1][0])).should.equal('string');
         result[1][1].should.equal('Text');

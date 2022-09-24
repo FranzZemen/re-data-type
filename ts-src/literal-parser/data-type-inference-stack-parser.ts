@@ -54,17 +54,7 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
     }
   }
 
-  parseAndResolve(remaining: string, scope: Map<string, any>, dataTypeRef: string, ec?: ExecutionContextI): DataTypeInferenceStackParserResult {
-    const moduleResolver = new ModuleResolver();
-    const result = this.parse(moduleResolver,remaining,scope,dataTypeRef,ec);
-    if(moduleResolver.hasPendingResolutions()) {
-      const log = new LoggerAdapter(ec, 're-data-type','data-type-inference-stack-parser', 'parseAndResolve')
-      logErrorAndThrow(new EnhancedError('Datatype literal parsing does not require resolutions'),log, ec);
-    }
-    return result;
-  }
-
-  parse(moduleResolver: ModuleResolver, remaining: string, scope: Map<string, any>, dataTypeRef: string, ec?: ExecutionContextI): DataTypeInferenceStackParserResult {
+  parse(remaining: string, scope: Map<string, any>, dataTypeRef: string, ec?: ExecutionContextI): DataTypeInferenceStackParserResult {
     const log = new LoggerAdapter(ec, 'rules-engine', 'data-type-inference-stack-parser', 'parse');
     if(dataTypeRef) {
       const parser = this.parserMap.get(dataTypeRef);

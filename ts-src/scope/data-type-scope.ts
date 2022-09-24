@@ -10,7 +10,7 @@ import {
   isRuleElementInstanceReference,
   isRuleElementModuleReference,
   RuleElementInstanceReference,
-  RuleElementModuleReference,
+  RuleElementModuleReference, RuleElementReference,
   Scope
 } from '@franzzemen/re-common';
 import Validator, {ValidationSchema} from 'fastest-validator';
@@ -69,20 +69,8 @@ export class DataTypeScope extends Scope {
     return this.getScopedFactoryItem<DataTypeI>(refName, DataTypeScope.DataTypeFactory, searchParent, ec);
   }
 
-  addDataTypes(dataTypes: (RuleElementInstanceReference<DataTypeI> | RuleElementModuleReference)[],
-               override = false,
-               overrideDown = false,
-               ec?: ExecutionContextI): DataTypeI[] | Promise<DataTypeI[]> {
-
-    return this.addScopedFactoryItems<DataTypeI>(dataTypes, DataTypeScope.DataTypeFactory, override, overrideDown, ec);
-  }
-
-  addDataTypesResolver(moduleResolver: ModuleResolver,
-                       dataTypes: (RuleElementInstanceReference<DataTypeI> | RuleElementModuleReference)[],
-                       override = false,
-                       overrideDown = false,
-                       ec?: ExecutionContextI) {
-    return this.addScopedFactoryItemsResolver(moduleResolver,dataTypes, DataTypeScope.DataTypeFactory, override, overrideDown, ec);
+  addDataTypes(dataTypes: RuleElementReference<DataTypeI>[], ec?: ExecutionContextI) {
+    return this.addRuleElementReferenceItems<DataTypeI>(dataTypes, DataTypeScope.DataTypeFactory, ec);
   }
 
   hasDataType(refName: string, ec?: ExecutionContextI): boolean {
