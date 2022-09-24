@@ -33,6 +33,7 @@ export class DataTypeScope extends Scope {
   public static DataTypeInferenceStack = 'StandardDataTypeInferenceStack';
   public static DataTypeInferenceStackParser = 'DataTypeInferenceStackParser';
   public static DataTypeLiteralStackStringifier = 'DataTypeLiteralStackStringifier';
+  private unsatisfiedDataTypes: string[] = [];
 
   private static dataTypeSchema: ValidationSchema = {
     refName: {type: 'string'},
