@@ -69,6 +69,9 @@ export class DataTypeScope extends Scope {
     return this.getScopedFactoryItem<DataTypeI>(refName, DataTypeScope.DataTypeFactory, searchParent, ec);
   }
 
+  addDataType(dataType: RuleElementReference<DataTypeI>, ec) {
+    return this.addRuleElementReferenceItem<DataTypeI>(dataType, ec);
+  }
   addDataTypes(dataTypes: RuleElementReference<DataTypeI>[], ec?: ExecutionContextI) {
     return this.addRuleElementReferenceItems<DataTypeI>(dataTypes, DataTypeScope.DataTypeFactory, ec);
   }
