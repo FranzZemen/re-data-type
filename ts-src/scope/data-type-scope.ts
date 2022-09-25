@@ -71,10 +71,10 @@ export class DataTypeScope extends Scope {
   }
 
   addDataType(dataTypeRef: RuleElementReference<DataTypeI>, action?: ModuleResolutionAction, ec?: ExecutionContextI) {
-    return this.addRuleElementReferenceItem<DataTypeI>(dataTypeRef, DataTypeScope.DataTypeFactory, undefined, ec);
+    return this.addRuleElementReferenceItem<DataTypeI>(dataTypeRef, DataTypeScope.DataTypeFactory, action, ec);
   }
   addDataTypes(dataTypeRefs: RuleElementReference<DataTypeI>[], actions?: ModuleResolutionAction[], ec?: ExecutionContextI) {
-    return this.addRuleElementReferenceItems<DataTypeI>(dataTypeRefs, DataTypeScope.DataTypeFactory, undefined, ec);
+    return this.addRuleElementReferenceItems<DataTypeI>(dataTypeRefs, DataTypeScope.DataTypeFactory, actions, ec);
   }
 
   hasDataType(refName: string, ec?: ExecutionContextI): boolean {
