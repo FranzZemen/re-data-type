@@ -7,5 +7,6 @@ export enum StandardDataType {
   Timestamp = 'Timestamp',
   Float = 'Float',
   Multivariate = 'Multivariate',
-  Unknown = 'Unknown'
+  Unknown = 'Unknown',
+  Indeterminate = 'Indeterminate'
 }

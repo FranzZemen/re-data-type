@@ -22,5 +22,4 @@ export class BooleanDataType extends DataType {
       return undefined;
     }
   }
-
 }
