@@ -1,3 +1,4 @@
+export * from './parser-messages/external-index.js';
 export * from './standard-data-type.js';
 export * from './data-type.js';
 export * from './scope/external-index.js';
