@@ -17,8 +17,8 @@ export interface DataTypeOptions extends Options {
 }
 
 
-export function _mergeDataTypeOptions(target: DataTypeOptions, source: DataTypeOptions, modifyTarget = true): DataTypeOptions {
-  let _target: DataTypeOptions =_mergeOptions(target, source, modifyTarget);
+export function _mergeDataTypeOptions(target: DataTypeOptions, source: DataTypeOptions, mergeInto = true): DataTypeOptions {
+  let _target: DataTypeOptions =_mergeOptions(target, source, mergeInto);
   if(_target === target) {
     if(source.inferenceOrder) {
       _target.inferenceOrder = [];
