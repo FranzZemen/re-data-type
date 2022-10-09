@@ -1,3 +1,5 @@
+import {ExecutionContextI} from '@franzzemen/app-utility';
+import {RuleElementModuleReference} from '@franzzemen/re-common';
 import {DataType} from '../data-type.js';
 import {StandardDataType} from '../standard-data-type.js';
 
@@ -6,10 +8,10 @@ export function isFloatDataType(dt: any | FloatDataType): dt is FloatDataType {
 }
 
 export class FloatDataType extends DataType {
-  constructor() {
-    super(StandardDataType.Float);
+  constructor (moduleRef?: RuleElementModuleReference, ec?: ExecutionContextI) {
+    super(StandardDataType.Float, moduleRef, ec);
+    this.instanceRef = {refName: this.refName, instance: this};
   }
-
   eval(value: any): number {
     const basicType = typeof value;
     if (basicType === 'string') {

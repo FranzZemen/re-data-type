@@ -29,6 +29,7 @@ import {TimestampLiteralStringifier} from '../literal-stringifier/timestamp-lite
 import {DataTypeOptions, defaultDataTypeInferenceOrder} from './data-type-options.js';
 
 export class DataTypeScope extends Scope {
+
   public static DataTypeFactory = 'DataTypeFactory';
   public static DataTypeInferenceStack = 'StandardDataTypeInferenceStack';
   public static DataTypeInferenceStackParser = 'DataTypeInferenceStackParser';
@@ -80,4 +81,12 @@ export class DataTypeScope extends Scope {
   hasDataType(refName: string, ec?: ExecutionContextI): boolean {
     return this.hasScopedFactoryItem(refName, DataTypeScope.DataTypeFactory, ec);
   }
+  /*
+  loadPendingResolutionsFromReferences(ref: any, factory?: string, action?: ModuleResolutionAction, ec?: ExecutionContextI) {
+    if(ref.)
+    const dataTypeFactory : DataTypeFactory
+    super.loadPendingResolutionsFromReferences(ref, factory, action, ec);
+  }
+
+   */
 }

@@ -1,3 +1,5 @@
+import {ExecutionContextI} from '@franzzemen/app-utility';
+import {RuleElementModuleReference} from '@franzzemen/re-common';
 import {DataType} from '../data-type.js';
 import {StandardDataType} from '../standard-data-type.js';
 
@@ -11,8 +13,9 @@ export function isTimestampDataType (dt: any | TimestampDataType): dt is Timesta
 }
 
 export class TimestampDataType extends DataType {
-  constructor() {
-    super(StandardDataType.Timestamp);
+  constructor(moduleRef?: RuleElementModuleReference, ec?: ExecutionContextI) {
+    super(StandardDataType.Timestamp, moduleRef, ec);
+    this.instanceRef = {refName: this.refName, instance: this};
   }
 
   eval(value: any): moment.Moment {

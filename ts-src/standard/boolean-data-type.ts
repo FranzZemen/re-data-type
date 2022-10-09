@@ -1,3 +1,5 @@
+import {ExecutionContextI} from '@franzzemen/app-utility';
+import {RuleElementModuleReference} from '@franzzemen/re-common';
 import {DataType, } from '../data-type.js';
 import {StandardDataType} from '../standard-data-type.js';
 
@@ -6,8 +8,9 @@ export function isBooleanDataType(dt: any | BooleanDataType): dt is BooleanDataT
 }
 
 export class BooleanDataType extends DataType {
-  constructor() {
-    super(StandardDataType.Float);
+  constructor (moduleRef?: RuleElementModuleReference, ec?: ExecutionContextI) {
+    super(StandardDataType.Boolean, moduleRef, ec);
+    this.instanceRef = {refName: this.refName, instance: this};
   }
 
   eval(value: any): boolean {

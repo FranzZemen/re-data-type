@@ -1,7 +1,10 @@
+import {ExecutionContextI} from '@franzzemen/app-utility';
+import {RuleElementModuleReference} from '@franzzemen/re-common';
 import {DataType} from '../data-type.js';
 import {StandardDataType} from '../standard-data-type.js';
 
 import {Moment, default as moment} from 'moment';
+
 const isMoment = moment.isMoment;
 
 export function isTextDataType(dt: any | TextDataType): dt is TextDataType {
@@ -9,9 +12,11 @@ export function isTextDataType(dt: any | TextDataType): dt is TextDataType {
 }
 
 export class TextDataType extends DataType {
-  constructor () {
-    super(StandardDataType.Text);
+  constructor(moduleRef?: RuleElementModuleReference, ec?: ExecutionContextI) {
+    super(StandardDataType.Text, moduleRef, ec);
+    this.instanceRef = {refName: this.refName, instance: this};
   }
+
   eval(value: any): string {
     const basicType = typeof value;
     if (basicType === 'string') {

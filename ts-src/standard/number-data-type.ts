@@ -1,3 +1,5 @@
+import {ExecutionContextI} from '@franzzemen/app-utility';
+import {RuleElementModuleReference} from '@franzzemen/re-common';
 import {DataType} from '../data-type.js';
 import {StandardDataType} from '../standard-data-type.js';
 
@@ -10,8 +12,9 @@ export function isNumberDataType(dt: any | NumberDataType): dt is NumberDataType
 }
 
 export class NumberDataType extends DataType {
-  constructor() {
-    super(StandardDataType.Number);
+  constructor (moduleRef?: RuleElementModuleReference, ec?: ExecutionContextI) {
+    super(StandardDataType.Number, moduleRef, ec);
+    this.instanceRef = {refName: this.refName, instance: this};
   }
 
   eval(value: any): number {

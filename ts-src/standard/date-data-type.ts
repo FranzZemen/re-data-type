@@ -1,4 +1,6 @@
 
+import {ExecutionContextI} from '@franzzemen/app-utility';
+import {RuleElementModuleReference} from '@franzzemen/re-common';
 import {DataType} from '../data-type.js';
 import {StandardDataType} from '../standard-data-type.js';
 
@@ -11,10 +13,11 @@ export function isDateDataType(dt: any | DateDataType): dt is DateDataType {
 
 // TODO: Should truncate any time componets
 export class DateDataType extends DataType {
-  constructor() {
-    super(StandardDataType.Date);
-  }
 
+  constructor (moduleRef?: RuleElementModuleReference, ec?: ExecutionContextI) {
+    super(StandardDataType.Date, moduleRef, ec);
+    this.instanceRef = {refName: this.refName, instance: this};
+  }
   eval(value: any): Moment {
     const basicType = typeof value;
     if (basicType === 'string') {
