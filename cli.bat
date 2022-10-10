@@ -1,3 +1,3 @@
 @echo off
-node publish/cli %1 %2 %3
+node publish/cli re-data-type %1 
 
