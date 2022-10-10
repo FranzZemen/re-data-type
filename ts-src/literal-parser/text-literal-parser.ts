@@ -9,7 +9,7 @@ export class TextLiteralParser extends DataTypeLiteralParser {
 
 
   parse(remaining: string, forceType: boolean, execContext?:ExecutionContextI): [string, any] {
-    let result = /^"([^]*)"([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
+    let result = /^["']([^]*)["']([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
 
     if(result) {
       return [result[2].trim(), result[1]];

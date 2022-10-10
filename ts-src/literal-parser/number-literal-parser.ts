@@ -14,7 +14,7 @@ export class NumberLiteralParser extends DataTypeLiteralParser {
     }
     if(forceType) {
       // Try text version
-      let numberResult = /^"([0-9]+)"([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
+      let numberResult = /^["']([0-9]+)["']([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
       if (numberResult) {
         return [numberResult[2].trim(), Number.parseInt(numberResult[1], 10)];
       }

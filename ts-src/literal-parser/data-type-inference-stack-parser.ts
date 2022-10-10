@@ -54,7 +54,7 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
     }
   }
 
-  parse(remaining: string, scope: Map<string, any>, dataTypeRef: string, ec?: ExecutionContextI): DataTypeInferenceStackParserResult {
+  parse(remaining: string, scope: Map<string, any>, dataTypeRef?: string, ec?: ExecutionContextI): DataTypeInferenceStackParserResult {
     const log = new LoggerAdapter(ec, 'rules-engine', 'data-type-inference-stack-parser', 'parse');
     if(dataTypeRef && dataTypeRef !== StandardDataType.Indeterminate && dataTypeRef !== StandardDataType.Unknown) {
       const parser = this.parserMap.get(dataTypeRef);
