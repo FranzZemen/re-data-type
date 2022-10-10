@@ -56,6 +56,6 @@ function executeDataTypeCLI(args: string[], ec?: ExecutionContextI) {
 
 defaultCliFactory.register({instanceRef: {refName: dataTypeExecutionKey, instance: {commandLineKey: dataTypeExecutionKey, cliFunction: executeDataTypeCLI}}});
 
-if (process.argv[2] === dataTypeExecutionKey) {
+if (process.argv[2] === dataTypeExecutionKey || process.argv[2].startsWith('-file')) {
   execute();
 }
