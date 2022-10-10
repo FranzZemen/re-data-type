@@ -1,6 +1,6 @@
 import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
 import {ParserMessageType} from '@franzzemen/re-common';
-import {defaultCliFactory, execute} from '@franzzemen/re-common/cli-common.js';
+import {defaultCliFactory, execute, logParserMessages} from '@franzzemen/re-common/cli-common.js';
 import {DataTypeFactory} from './factory/data-type-factory.js';
 import {DataTypeInferenceStackParser} from './literal-parser/data-type-inference-stack-parser.js';
 import {DataTypeScope} from './scope/data-type-scope.js';
@@ -39,27 +39,7 @@ function executeDataTypeCLI(args: string[], ec?: ExecutionContextI) {
 
       const parser = scope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser;
       let [remaining, [value, parserRefName], parserMessages] = parser.parse(data, scope, dataTypeRef, ec);
-      if (parserMessages) {
-        let params: [data?: any, message?: string] = [];
-        parserMessages.forEach(parserMessage => {
-          params = [];
-          if (parserMessage.contextObject) {
-            params.push(parserMessage.contextObject);
-          }
-          params.push(parserMessage.message);
-          if (parserMessage.type === ParserMessageType.Info) {
-            log.info(...params);
-          } else if (parserMessage.type === ParserMessageType.Note) {
-            log.debug(...params);
-          } else if (parserMessage.type === ParserMessageType.Trivial) {
-            log.trace(...params);
-          } else if (parserMessage.type === ParserMessageType.Warn) {
-            log.warn(...params);
-          } else if (parserMessage.type === ParserMessageType.Error) {
-            log.error(parserMessage.message);
-          }
-        });
-      }
+      logParserMessages(parserMessages,ec);
       if (value !== undefined) {
         log.info(`Data type is "${parserRefName}" with value ${parserRefName === 'Text' ? '\"' + value + '\"' : value}`);
       }
