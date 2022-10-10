@@ -11,7 +11,7 @@ function executeDataTypeCLI(args: string[], ec?: ExecutionContextI) {
   const log = new LoggerAdapter(ec, 're-data-type', 'cli', 'executeDataTypeCLI');
   log.debug(args, 'arguments');
   if (args.length < 0) {
-    log.error(new Error(`Missing command line arguments: re-cli [data type ref] value`));
+    log.error(new Error(`Missing command line arguments: ${dataTypeExecutionKey} [data type ref] ["|']value["|']`));
     process.exit(1);
   }
   let dataStr: string;
@@ -36,11 +36,9 @@ function executeDataTypeCLI(args: string[], ec?: ExecutionContextI) {
         }
       }
       const data = dataStr;
-      // log.info(`found: "${data}"`);
 
       const parser = scope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser;
       let [remaining, [value, parserRefName], parserMessages] = parser.parse(data, scope, dataTypeRef, ec);
-      // log.info(`DataType: ${parserRefName} ${value}`);
       if (parserMessages) {
         let params: [data?: any, message?: string] = [];
         parserMessages.forEach(parserMessage => {
