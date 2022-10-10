@@ -30,7 +30,7 @@ export class DataTypeLiteralStackStringifier implements ScopedFactory<DataTypeLi
   }
 
   addStringifier(stringifier: DataTypeLiteralStringifierI | RuleElementModuleReference, override = false,  ec?: ExecutionContextI): DataTypeLiteralStringifierI | Promise<DataTypeLiteralStringifierI> {
-    const log = new LoggerAdapter(ec, 'rules-engine', 'data-type-literal-stack-stringifier', 'addStringifier');
+    const log = new LoggerAdapter(ec, 're-data-type', 'data-type-literal-stack-stringifier', 'addStringifier');
     const dataTypeLiteralStringifier = this.stringifierMap.get(stringifier.refName)?.instanceRef?.instance;
 
     if(dataTypeLiteralStringifier && !override)  {

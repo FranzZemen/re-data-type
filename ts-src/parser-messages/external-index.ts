@@ -1,1 +1,1 @@
-export * from './dt-ps-std-msg.js';
+export * from './data-type-standard-parser-messages.js';

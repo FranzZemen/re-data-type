@@ -10,7 +10,7 @@ const ec: ExecutionContextI = {
 }
 
 export function execute() {
-  const log = new LoggerAdapter(ec, 're-data-type', 'index', 'execute');
+  const log = new LoggerAdapter(ec, 're-data-type', 'cli', 'execute');
   log.info(process.argv, 'argv');
   if(process.argv.length < 3) {
     log.error(new Error (`Missing command line argument: data`));

@@ -49,13 +49,13 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
         }
       });
     } else {
-      const log = new LoggerAdapter(ec, 'rules-engine', 'data-type-stack-parser', 'constructor');
+      const log = new LoggerAdapter(ec, 're-data-type', 'data-type-stack-parser', 'constructor');
       log.warn('Standard inference stack not used');
     }
   }
 
   parse(remaining: string, scope: Map<string, any>, dataTypeRef?: string, ec?: ExecutionContextI): DataTypeInferenceStackParserResult {
-    const log = new LoggerAdapter(ec, 'rules-engine', 'data-type-inference-stack-parser', 'parse');
+    const log = new LoggerAdapter(ec, 're-data-type', 'data-type-inference-stack-parser', 'parse');
     if(dataTypeRef && dataTypeRef !== StandardDataType.Indeterminate && dataTypeRef !== StandardDataType.Unknown) {
       const parser = this.parserMap.get(dataTypeRef);
       if(!parser) {

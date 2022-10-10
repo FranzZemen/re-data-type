@@ -13,7 +13,7 @@ export class TimeLiteralParser extends DataTypeLiteralParser {
   }
 
   parse(remaining: string, forceType: boolean, ec?:ExecutionContextI): [string, any] {
-    const log = new LoggerAdapter(ec, 'rules-engine', 'time-data-type.ts', 'inferValue');
+    const log = new LoggerAdapter(ec, 're-data-type', 'time-data-type.ts', 'inferValue');
     // Quoted version
     let result = /^("[0-2][0-9]:[0-5][0-9]:[0-5][0-9]")([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
     if(result) {

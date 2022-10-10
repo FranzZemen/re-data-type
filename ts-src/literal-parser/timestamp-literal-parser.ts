@@ -14,7 +14,7 @@ export class TimestampLiteralParser extends DataTypeLiteralParser {
 
 
   parse(remaining: string, forceType: boolean, ec?:ExecutionContextI): [string, any] {
-    const log = new LoggerAdapter(ec, 'rules-engine', 'timestamp-data-type.ts', 'inferValue');
+    const log = new LoggerAdapter(ec, 're-data-type', 'timestamp-data-type.ts', 'parse');
     // Quoted version
     let result = /^"([0-9]{4}-[0-1][0-9]-[0-3][0-9])(T|[\s\t\r\n\v\f\u2028\u2029]+)([0-2][0-9]:[0-5][0-9]:[0-5][0-9])"([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
     if (result) {
