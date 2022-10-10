@@ -7,7 +7,7 @@ import {DataTypeScope} from './scope/data-type-scope.js';
 
 const dataTypeExecutionKey = 're-data-type';
 
-export function executeDataTypeCLI(args: string[], ec?: ExecutionContextI) {
+function executeDataTypeCLI(args: string[], ec?: ExecutionContextI) {
   const log = new LoggerAdapter(ec, 're-data-type', 'cli', 'executeDataTypeCLI');
   log.debug(args, 'arguments');
   if (args.length < 0) {
