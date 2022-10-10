@@ -1,7 +1,13 @@
-import {CheckFunction, ExecutionContextI, LoggerAdapter, ModuleResolver} from '@franzzemen/app-utility';
-import {EnhancedError, logErrorAndThrow} from '@franzzemen/app-utility/enhanced-error.js';
-import {InferenceStackParser, isRuleElementModuleReference, RuleElementModuleReference} from '@franzzemen/re-common';
+import {CheckFunction, ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
+import {
+  InferenceStackParser,
+  isRuleElementModuleReference,
+  ParserMessages,
+  ParserMessageType,
+  RuleElementModuleReference
+} from '@franzzemen/re-common';
 import Validator from 'fastest-validator';
+import {DataTypeStandardParserMessages} from '../parser-messages/data-type-standard-parser-messages.js';
 import {StandardDataType} from '../standard-data-type.js';
 import {BooleanLiteralParser} from './boolean-literal-parser.js';
 import {DataTypeLiteralParserI} from './data-type-literal-parser.js';
@@ -12,17 +18,18 @@ import {TextLiteralParser} from './text-literal-parser.js';
 import {TimeLiteralParser} from './time-literal-parser.js';
 import {TimestampLiteralParser} from './timestamp-literal-parser.js';
 
-export type DataTypeInferenceStackParserResult = [remaining: string, result: [value: any, parserRefName: string]];
+export type DataTypeInferenceStackParserResult = [remaining: string, result: [value: any, parserRefName: string], parserMessages: ParserMessages];
 
 
-export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeLiteralParserI>{
+export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeLiteralParserI> {
   private checkFunction: CheckFunction = (new Validator()).compile({
     refName: {type: 'string', optional: false},
     parse: {type: 'function', optional: false}
-  })
+  });
+
   constructor(private standardDataTypeInferenceStack?: string[], ec?: ExecutionContextI) {
     super();
-    if(standardDataTypeInferenceStack) {
+    if (standardDataTypeInferenceStack) {
       standardDataTypeInferenceStack.forEach(inference => {
         switch (inference) {
           case StandardDataType.Text:
@@ -35,13 +42,13 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
             this.addParser(new NumberLiteralParser(), false, ec);
             break;
           case StandardDataType.Boolean:
-            this.addParser(new BooleanLiteralParser(), false,  ec);
+            this.addParser(new BooleanLiteralParser(), false, ec);
             break;
           case StandardDataType.Timestamp:
             this.addParser(new TimestampLiteralParser(), false, ec);
             break;
           case StandardDataType.Date:
-            this.addParser(new DateLiteralParser(), false,  ec);
+            this.addParser(new DateLiteralParser(), false, ec);
             break;
           case StandardDataType.Time:
             this.addParser(new TimeLiteralParser(), false, ec);
@@ -56,31 +63,57 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
 
   parse(remaining: string, scope: Map<string, any>, dataTypeRef?: string, ec?: ExecutionContextI): DataTypeInferenceStackParserResult {
     const log = new LoggerAdapter(ec, 're-data-type', 'data-type-inference-stack-parser', 'parse');
-    if(dataTypeRef && dataTypeRef !== StandardDataType.Indeterminate && dataTypeRef !== StandardDataType.Unknown) {
+    if (dataTypeRef && dataTypeRef !== StandardDataType.Indeterminate && dataTypeRef !== StandardDataType.Unknown) {
       const parser = this.parserMap.get(dataTypeRef);
-      if(!parser) {
+      if (!parser) {
+        const parserMessages: ParserMessages = [{
+          message: `${DataTypeStandardParserMessages.InvalidDataTypeNoParser} for ${dataTypeRef}`,
+          type: ParserMessageType.Error
+        }];
         log.warn(`No parser for ${dataTypeRef}, ignoring`);
-        return [remaining, [undefined, undefined]];
+        return [remaining, [undefined, undefined], parserMessages];
       } else {
+        let parserMessages: ParserMessages;
         const parsingResult = parser.instanceRef.instance.parse(remaining, true, ec);
-        return [parsingResult[0], [parsingResult[1], dataTypeRef]];
+        parserMessages = parsingResult[2];
+        if (parserMessages) {
+          parserMessages.splice(0, 0, {
+            message: DataTypeStandardParserMessages.DataTypeParsed,
+            type: ParserMessageType.Info
+          });
+        } else {
+          parserMessages = [{message: DataTypeStandardParserMessages.DataTypeParsed, type: ParserMessageType.Info}];
+        }
+        return [parsingResult[0], [parsingResult[1], dataTypeRef], parserMessages];
       }
     } else {
-      for(let i = 0; i < this.parserInferenceStack.length; i++) {
+      for (let i = 0; i < this.parserInferenceStack.length; i++) {
         const parser = this.parserMap.get(this.parserInferenceStack[i]);
         let value: any;
-        [remaining, value] = parser.instanceRef.instance.parse(remaining, false, ec);
-        if(value !== undefined) {
-          return [remaining, [value, this.parserInferenceStack[i]]];
+        let parserMessages: ParserMessages;
+        [remaining, value, parserMessages] = parser.instanceRef.instance.parse(remaining, false, ec);
+        if (value !== undefined) {
+          if (parserMessages) {
+            parserMessages.splice(0, 0, {
+              message: DataTypeStandardParserMessages.DataTypeParsed,
+              type: ParserMessageType.Info
+            });
+          } else {
+            parserMessages = [{
+              message: DataTypeStandardParserMessages.DataTypeParsed,
+              type: ParserMessageType.Info
+            }];
+          }
+          return [remaining, [value, this.parserInferenceStack[i]], parserMessages];
         }
       }
-      return [remaining, [undefined, undefined]];
+      return [remaining, [undefined, undefined], [{message: `${DataTypeStandardParserMessages.NoValidDataTypeNear}: ${remaining}`, type: ParserMessageType.Info}]];
     }
   }
 
   addParser(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, override?: boolean, ec?: ExecutionContextI): DataTypeLiteralParserI | Promise<DataTypeLiteralParserI> {
-    if(isRuleElementModuleReference(stackedParser)) {
-      if(stackedParser.module.loadSchema === undefined) {
+    if (isRuleElementModuleReference(stackedParser)) {
+      if (stackedParser.module.loadSchema === undefined) {
         stackedParser.module.loadSchema = this.checkFunction;
       }
     }
@@ -88,8 +121,8 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
   }
 
   addParserAtStackIndex(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, stackIndex: number, ec?: ExecutionContextI): boolean | Promise<boolean> {
-    if(isRuleElementModuleReference(stackedParser)) {
-      if(stackedParser.module.loadSchema === undefined) {
+    if (isRuleElementModuleReference(stackedParser)) {
+      if (stackedParser.module.loadSchema === undefined) {
         stackedParser.module.loadSchema = this.checkFunction;
       }
     }
