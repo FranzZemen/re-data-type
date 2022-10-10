@@ -5,7 +5,7 @@ import {DataTypeFactory} from './factory/data-type-factory.js';
 import {DataTypeInferenceStackParser} from './literal-parser/data-type-inference-stack-parser.js';
 import {DataTypeScope} from './scope/data-type-scope.js';
 
-const dataTypeExecutionKey = 're-data-type';
+export const dataTypeExecutionKey = 're-data-type';
 
 function executeDataTypeCLI(args: string[], ec?: ExecutionContextI) {
   const log = new LoggerAdapter(ec, 're-data-type', 'cli', 'executeDataTypeCLI');
