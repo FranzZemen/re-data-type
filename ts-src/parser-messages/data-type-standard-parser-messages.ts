@@ -11,9 +11,9 @@ export class DataTypeStandardParserMessages extends StandardParserMessages {
   static TimestampDataTypeParsed = 'Timestamp data type parsed';
 
   static NotATimestampFormat = 'Not a timestamp format';
-  static NotATimeFormat: 'Not a time format';
-  static NotADateFormat: 'Not a date format';
-  static InvalidDataTypeNoParser: 'Invalid data type: No parser';
-  static NoValidDataTypeNear: 'No valid data type near';
+  static NotATimeFormat = 'Not a time format';
+  static NotADateFormat = 'Not a date format';
+  static InvalidDataTypeNoParser = 'Invalid data type: No parser';
+  static NoValidDataTypeNear = 'No valid data type near';
 }
 
