@@ -17,18 +17,8 @@ export class TextLiteralParser extends DataTypeLiteralParser {
       return [result[2].trim(), result[1], parserMessages];
     }
     if(forceType) {
-      /*
-      REMOVING THIS - since the ValueExpressionParser goes before the Attribute expression, when we force type on Text on
-      the RHS of a condition the ValueExpressionParser picks up what should be an Attribute for no quoted alphanumeric.
-
-      ANYWAYS, text should always be double quoted. (LATER...allowing single quotes)
-      // Try alphanumeric no whitespace
-      result = /^([0-9a-zA-Z]+)(?:[\s\t\r\n\v\f\u2028\u2029]|$)([^]*)$/.exec(remaining);
-      if(result) {
-        return [result[2].trim(), result[1]];
-      }
-
-       */
+      // Forcing text interferes with inference order?
+      return [remaining, undefined, [{message: DataTypeStandardParserMessages.TextShouldAlwaysBeQuoted,type: ParserMessageType.Warn}]];
     }
     return [remaining, undefined, undefined];
   }

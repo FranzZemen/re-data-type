@@ -15,5 +15,6 @@ export class DataTypeStandardParserMessages extends StandardParserMessages {
   static NotADateFormat = 'Not a date format';
   static InvalidDataTypeNoParser = 'Invalid data type: No parser';
   static NoValidDataTypeNear = 'No valid data type near';
+  static TextShouldAlwaysBeQuoted = 'Text should always be quoted';
 }
 
