@@ -1,6 +1,6 @@
 {
   "name": "@franzzemen/re-data-type",
-  "version": "9.2.3",
+  "version": "9.2.4",
   "description": "Rules Engine Data Types",
   "type": "module",
   "main": "index.js",
@@ -19,7 +19,7 @@
   "homepage": "https://github.com/franzzemen/re-data-type#readme",
   "devDependencies": {
     "@franzzemen/gulp-base": "^12.0.4",
-    "@franzzemen/npmu": "^2.0.15",
+    "@franzzemen/npmu": "^2.0.16",
     "@franzzemen/safe-config": "^2.0.45",
     "@types/chai": "^4.3.3",
     "@types/mocha": "^10.0.0",
@@ -32,8 +32,8 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@franzzemen/app-utility": "5.1.15",
-    "@franzzemen/re-common": "10.2.4",
+    "@franzzemen/app-utility": "5.1.17",
+    "@franzzemen/re-common": "10.2.5",
     "fastest-validator": "^1.15.0",
     "moment": "^2.29.4",
     "object-path": "^0.11.8",
