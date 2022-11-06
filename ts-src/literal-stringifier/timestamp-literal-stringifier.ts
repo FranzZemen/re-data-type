@@ -1,4 +1,4 @@
-import {LogExecutionContext} from '@franzzemen/re-common';
+import {LogExecutionContext} from '@franzzemen/logger-adapter';
 import {StandardDataType} from '../standard-data-type.js';
 import {TimestampDataType} from '../standard/timestamp-data-type.js';
 import {DataTypeLiteralStringifier} from './data-type-literal-stringifier.js';

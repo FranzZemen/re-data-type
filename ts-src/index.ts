@@ -1,5 +1,3 @@
-export * from '@franzzemen/re-common';
-
 export * from './parser-messages/external-index.js';
 export * from './standard-data-type.js';
 export * from './data-type.js';

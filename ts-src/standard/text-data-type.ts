@@ -1,4 +1,5 @@
-import {LogExecutionContext, RuleElementModuleReference} from '@franzzemen/re-common';
+import {LogExecutionContext} from '@franzzemen/logger-adapter';
+import { RuleElementModuleReference} from '@franzzemen/re-common';
 import {DataType} from '../data-type.js';
 import {StandardDataType} from '../standard-data-type.js';
 

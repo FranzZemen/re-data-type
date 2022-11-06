@@ -1,7 +1,7 @@
 import {StandardParserMessages} from '@franzzemen/re-common';
 
 export class DataTypeStandardParserMessages extends StandardParserMessages {
-  static DataTypeParsed = 'Data type parsed';
+  static DataTypeParsed = 'ReDataType type parsed';
   static TextDataTypeParsed = 'Text data type parsed';
   static NumberDataTypeParsed = 'Number data type parsed';
   static FloatDataTypeParsed = 'Float data type parsed';

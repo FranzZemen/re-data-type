@@ -1,4 +1,5 @@
-import {LogExecutionContext, RuleElementFactory} from '@franzzemen/re-common';
+import {LogExecutionContext} from '@franzzemen/logger-adapter';
+import {RuleElementFactory} from '@franzzemen/re-common';
 import {DataTypeI, isDataType} from '../data-type.js';
 import {BooleanDataType} from '../standard/boolean-data-type.js';
 import {DateDataType} from '../standard/date-data-type.js';

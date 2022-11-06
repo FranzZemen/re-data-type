@@ -1,7 +1,8 @@
+import {CheckFunction} from '@franzzemen/execution-context';
+import {LogExecutionContext, LoggerAdapter} from '@franzzemen/logger-adapter';
 import {
-  CheckFunction,
   InferenceStackParser,
-  isRuleElementModuleReference, LogExecutionContext, LoggerAdapter,
+  isRuleElementModuleReference,
   ParserMessages,
   ParserMessageType,
   RuleElementModuleReference

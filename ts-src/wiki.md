@@ -1,21 +1,21 @@
-# Data Type Wiki
+# ReDataType Type Wiki
 
 In the re framework quick start,
 the [concept of a data type](https://github.com/FranzZemen/re/blob/main/ts-src/quick-start.md#introducing-data-types)
 was introduced.
 
-Data Types provide the re framework with the ability to evaluate its functional parts, for example to compare two
+ReDataType Types provide the re framework with the ability to evaluate its functional parts, for example to compare two
 expressions in the right way or to evaluate formulas. The concept of data types at the language level (Javascript) is
 insufficient for the re framework because Javascript provides insufficient support especially for things like custom
 data types.
 
-The re framework provides for some "standard" or fundamental Data Types that can be useful for simple cases. Others will
+The re framework provides for some "standard" or fundamental ReDataType Types that can be useful for simple cases. Others will
 be added over time, as well as more complex ones; but it is also likely that re framework users will provide custom data
 types over time for their projects.
 
 ## Literal Values
 
-All standard data types have a literal value representation. Custom Data Types may optionally have literal value
+All standard data types have a literal value representation. Custom ReDataType Types may optionally have literal value
 representations. Literal value ranges may appear to overlap, and this is fine.
 
 For example, the literal value for Text is a double-quoted string. However, one can also define a custom data type that
@@ -25,12 +25,12 @@ data type, but constrained for the Morse one.
 When data types have overlapping ranges of literal values, the parsers for the textual format need to be ordered in
 such a way that the inference engine will make the right choices in the absence of Hints.
 
-## Standard Data Types
+## Standard ReDataType Types
 
-The current list of Standard Data Types are below.
+The current list of Standard ReDataType Types are below.
 
 <table>
-    <tr><th>Data Type</th><th>Description</th><th>Javascript equivalency (if applicable)</th></tr>
+    <tr><th>ReDataType Type</th><th>Description</th><th>Javascript equivalency (if applicable)</th></tr>
     <tr><td>Text</td><td>string representation of data</td><td>string</td></tr>
     <tr><td>Number</td><td>a number without a floating point</td><td>number</td></tr>
     <tr><td>Float</td><td>a floating point number expressed as NN.dd</td><td>number</td></tr>
@@ -42,14 +42,14 @@ The current list of Standard Data Types are below.
 
 
 ### Literal Formats, Text Hinted Formats, Runtime Conversions and Inference Order
-This table provides formats for standard Data Type literal values, as well as some additional supportive information.
-The Inference Order is the order in which the DataTypeParser will attempt to infer which Data Type it is if it is 
+This table provides formats for standard ReDataType Type literal values, as well as some additional supportive information.
+The Inference Order is the order in which the DataTypeParser will attempt to infer which ReDataType Type it is if it is 
 not explicitly provided by context or by a hint during text format parsing, or if it cannot be inferred by the 
 literal value itself (for example in the absence of other information "5" would be inferred as a Number).
 
 <table>
 <tr>
-    <th>Data Type</th>
+    <th>ReDataType Type</th>
     <th>Native Format</th>
     <th>With Hints (Text Format)</th>
     <th>Runtime Conversions</th>
@@ -106,16 +106,16 @@ literal value itself (for example in the absence of other information "5" would 
 </tr>
 </table>
 
-It is possible to alter the inference order, which can be required when new Custom Data Types are added.  In the 
-absence of reordering, any Custom Data Types are appended to the inference order (and this is often exactly the 
-desired behavior).  In the Morse Data Type example referred to previously, however, one would normally want the Morse 
-Data Type to be inferred prior to the Text Data Type.
+It is possible to alter the inference order, which can be required when new Custom ReDataType Types are added.  In the 
+absence of reordering, any Custom ReDataType Types are appended to the inference order (and this is often exactly the 
+desired behavior).  In the Morse ReDataType Type example referred to previously, however, one would normally want the Morse 
+ReDataType Type to be inferred prior to the Text ReDataType Type.
 
 The inference order is controlled through options, either provided at re framework initialization, provided inline 
 in the text format, or programmatically.
 
 =====
-The inference order is controlled in the global [Options](Options). Absence of an entry, the Standard Data Types will be
+The inference order is controlled in the global [Options](Options). Absence of an entry, the Standard ReDataType Types will be
 inferred as above.
 
 The allowed format with [Hints](Hints) for the Text Format is an alternative way to express a literal value provided the
@@ -123,22 +123,22 @@ data-type hint is supplied.
 
 The runtime conversion is the attempt to convert to a native Javascript type if it is not already in that type.  
 This information is not that useful for literal types, but could be useful if, for example, an Attribute Expression with
-a Number Data Type pointed to at run time to a property that happens to be a quoted number; it may be beyond the easy
+a Number ReDataType Type pointed to at run time to a property that happens to be a quoted number; it may be beyond the easy
 control of the user to change that and this case is fairly frequent. Therefore, the Rules Engine does allow for these
 natural conversions to happen upon evaluation.
 
 ## Examples
 
-For examples of Standard Data Types in Value Expression literals and other Expressions, see [Expressions](Expression).
+For examples of Standard ReDataType Types in Value Expression literals and other Expressions, see [Expressions](Expression).
 
 ## Text Format Parsers
 
-Parsers for literals at the Data Type level are not likely to be that useful to the regular Rules Engine user, but there
+Parsers for literals at the ReDataType Type level are not likely to be that useful to the regular Rules Engine user, but there
 may be some \cause for invoking them directly. This section explains how to invoke them, with a more detailed
 explanation in the [Contributor's Reference](ContributorDataType). More typically, usage of the Value Expression parser
 would be used than these low level parsers.
 
-Each Data Type (including Custom Data Types) has their own parsers that supply the following API:
+Each ReDataType Type (including Custom ReDataType Types) has their own parsers that supply the following API:
 
     parse(remaining: string, forceType: boolean, ec?: LogExecutionContext): [string, any];
     
@@ -155,14 +155,14 @@ Each Data Type (including Custom Data Types) has their own parsers that supply t
         If the parsed value is undefined, that indicates that the text starting at remaining does not contain this 
         data type literal, and the returned remaining text is the same as what was passed in.
 
-The Standard Data Type Parser classes containing the above API method are:
+The Standard ReDataType Type Parser classes containing the above API method are:
 
     [DataType]LiteralParser
 
-    where [DataType] can be replaced with the Data Type (Text, Number etc.)
+    where [DataType] can be replaced with the ReDataType Type (Text, Number etc.)
 
-These parsers only parse if they find their own respective values. There is an overall Data Type Parser that will parse
-*any* Data Type literal value (including Custom Data Types) if it is in supplied text.
+These parsers only parse if they find their own respective values. There is an overall ReDataType Type Parser that will parse
+*any* ReDataType Type literal value (including Custom ReDataType Types) if it is in supplied text.
 
 This is the DataTypeInferenceStackParser and its API is:
 
@@ -172,15 +172,15 @@ This method accepts the text to parse, where here also the literal values should
 text, followed by the abstracted [Scope](Scope) (provided by a Map), the inferred context any the optional
 [Execution Context](ExecutionContext).
 
-The DataTypeInferenceStackParser attempts to parse the Data Type, either because it is told which one to parse through
-the dataTypeRef, or by attempting each registered Data Type Parser in the inference order until one returns a value or
+The DataTypeInferenceStackParser attempts to parse the ReDataType Type, either because it is told which one to parse through
+the dataTypeRef, or by attempting each registered ReDataType Type Parser in the inference order until one returns a value or
 no literal value is found.
 
 In this method, remaining input is the text where the literal value may start, the scope is ignored (see below),
-dataTypeRef may be undefined, but if provided forces parsing for that Data Type.
+dataTypeRef may be undefined, but if provided forces parsing for that ReDataType Type.
 
 It returns a tuple that contains the remaining text after parsing the value (which is the same as input if no literal
-value is found), followed by a sub-tuple which itself contains the parsed value and the inferred (or supplied) Data
+value is found), followed by a sub-tuple which itself contains the parsed value and the inferred (or supplied) ReDataType
 Type.
 
 We mentioned the scope parameter is not used; it is an artifact that stems from DataTypeInferenceStackParser inheriting
@@ -189,7 +189,7 @@ It could conceivably be useful here in the future.
 
 ## Stringifier
 
-As with Data Type Parsers, its not anticipated that users would normally need to invoke the Stringifier to convert Data
+As with ReDataType Type Parsers, its not anticipated that users would normally need to invoke the Stringifier to convert ReDataType
 Type values to the Text Format - its more likely that they would invoke the Expression stringifiers and even then, that
 would be for a purpose more sophisticated that simple Rules Engine usage.
 
@@ -197,17 +197,17 @@ That said the same pattern for Stringifiers exist as for Parsers.
 
 More on this TBD.
 
-## Custom Data Types
+## Custom ReDataType Types
 
-Custom Data Types provide a powerful way to represent complex data shapes and compare and operate on that data shape
+Custom ReDataType Types provide a powerful way to represent complex data shapes and compare and operate on that data shape
 using conditions, formulas and functions.
 
-A Custom Data Type may be an object shape or even something as simple as a formatted sequence of characters
+A Custom ReDataType Type may be an object shape or even something as simple as a formatted sequence of characters
 (similar to Timestamps for instance), such as Morse.
 
-When should Custom Data Types be considered? It's really up to the Rules Engine user, but guidance is provided here that
+When should Custom ReDataType Types be considered? It's really up to the Rules Engine user, but guidance is provided here that
 often it is preferable to simply use things like Attribute Expression to specific object attributes instead of Custom
-Data Types, if only not to lose some of the externalization a Rules Engine is used for in the first place.  
+ReDataType Types, if only not to lose some of the externalization a Rules Engine is used for in the first place.  
 However, there may be some very real business logic that isn't necessary to express in a Rules Engine over a shape.
 
 For example, say the data domain is equities; an organization may have definitions on how to consider one equity more
@@ -216,7 +216,7 @@ so), but find it important to make decisions if an equity IS more valuable:
 
     <ex data-type=Stock>> data.equity1 is more valueable than data.equity2
 
-    where Stock is a custom Data Type and "is more valuable than" is a custom Comparator
+    where Stock is a custom ReDataType Type and "is more valuable than" is a custom Comparator
 
 There are other ways to achieve a similar convenience, of course. One could create a Function Expression that returned a
 relative value, for example and express it hypothetically as:
@@ -227,27 +227,27 @@ Or one could express it as Formula Expressions for example:
 
     @+[data.equity1.PERatio * data.equity1.sharesOutstanding] > @+[data.equity2.PERatio * data.equity2.sharesOutstanding]
 
-So, before using a Custom Data Type, there are other choices to consider as well.
+So, before using a Custom ReDataType Type, there are other choices to consider as well.
 
-Finally a Custom Data Types is not really useful without at least one of Custom Comparator or Custom Operators.  
+Finally a Custom ReDataType Types is not really useful without at least one of Custom Comparator or Custom Operators.  
 After all, the point of a Rules Engine is to calculate and compare things.
 
-### Creating a Custom Data Type
+### Creating a Custom ReDataType Type
 
-The following steps are needed to create a Custom Data Type:
+The following steps are needed to create a Custom ReDataType Type:
 
 1. Creating and registering the implementation, including potentially reconfiguring the inference order
 2. Optionally creating and registering a parser if it will be used in the Text Format
 3. Optionally creating and registering a stringifier if it will be used in the Text Format
 
-We will create two Custom Data Types, one based on an object shape (Stock), and one based on a series of characters
+We will create two Custom ReDataType Types, one based on an object shape (Stock), and one based on a series of characters
 (Morse). The code is located in:
 
     Example: /quick-start/data-type/custom/1.2
 
 #### Creating And Registering The Implementation
 
-To create a Custom Data Type, first implement the interface DataTypeI or extend the abstract class DataType. A KEY
+To create a Custom ReDataType Type, first implement the interface DataTypeI or extend the abstract class DataType. A KEY
 requirement is that the DataTypeI shape that you implement does not have instance specific state. The aforementioned
 eval method can go get instance specific state at run time, but you have no control how the shape instance itself will
 be handle. Therefore, assume stateless.
@@ -259,13 +259,13 @@ be handle. Therefore, assume stateless.
 
 This interface requires two properties.
 
-First a refName, which will be the name of the Custom Data Type and should not conflict with other Data Types. By
+First a refName, which will be the name of the Custom ReDataType Type and should not conflict with other ReDataType Types. By
 Convention, names are capitalized, for example: Text. While spaces are allowed for multi-word, they are discouraged. For
 one thing, when using them in data-type hints, you would need to use double quotes; whereas contiguous letters don't
-need quotes. Moreover, if desiring to contribute the Custom Data Type to the project as a Standard Data Type, spaces are
+need quotes. Moreover, if desiring to contribute the Custom ReDataType Type to the project as a Standard ReDataType Type, spaces are
 not allowed.
 
-We are creating two Custom Data Types, and we'll use the refNames of "Stock" and "Morse".
+We are creating two Custom ReDataType Types, and we'll use the refNames of "Stock" and "Morse".
 
 The Shape of Stock is:
 
@@ -282,20 +282,20 @@ The Shape of Morse is a string whose values can be whitespace, short dashes "-" 
 
 The second property is an evaluation method. Its role is:
 
-1. To ensure that given value maps to the Data Type rules
+1. To ensure that given value maps to the ReDataType Type rules
 2. To perform any implicit conversions (such as converting "1" to 1 for a StandardNumberDataType)
 3. To perform additive functions that can only be performed on the value at run time
 
 Within the Rules Engine, everything ultimatly resolves to understanding the value of an Expression at Runtime and this
-method is at the root of it. For example, an Attribute Expression of Data Type Number points at design time to some
-attribute on teh data domain. At run time the rules engine fetches that value and passes it through the Number Data Type
+method is at the root of it. For example, an Attribute Expression of ReDataType Type Number points at design time to some
+attribute on teh data domain. At run time the rules engine fetches that value and passes it through the Number ReDataType Type
 eval method; what results is the value it uses. This is true of all Expressions except potentially the Function
 Expression, where the implementor has the option to do otherwise.
 
 If role 1 is not met or there is an issue with role 2 or 3, the eval method should return undefined.
 
-The returned value is the shape of the Data Type or a Promise to it. It could be a Promise as a result of role 3, above.
-None of the Standard Data Types return a Promise. The Rules Engine has several areas where a Promise may be generated,
+The returned value is the shape of the ReDataType Type or a Promise to it. It could be a Promise as a result of role 3, above.
+None of the Standard ReDataType Types return a Promise. The Rules Engine has several areas where a Promise may be generated,
 and knows how to convert evaluations from synchronous to asynchronous on the fly.
 
 In the case of Stock, the evaluation will ensure that the passed in value will be a partial of the shape (all the values
@@ -353,9 +353,9 @@ There are several ways to achieve that:
 - Through top level Options
 - Inline
 
-#### Registering the Custom Data Types Programmatically
+#### Registering the Custom ReDataType Types Programmatically
 
-To register the Custom Data Types Programmatically, you will need to invoke the DataTypeFactory. For now we'll just
+To register the Custom ReDataType Types Programmatically, you will need to invoke the DataTypeFactory. For now we'll just
 worry about the registration method - you can read more about this factory [here](DataTypeFactory).
 
 The method to invoke is:
@@ -371,14 +371,14 @@ Which we'll invoke twice
     registerDataType(new StockDataType());
     registerDataType(new MorseDataType());
 
-#### Registering the Custom Data Types With Options
+#### Registering the Custom ReDataType Types With Options
 
-This is the more common way to register Custom Data Types, as no programming is necessary.
+This is the more common way to register Custom ReDataType Types, as no programming is necessary.
 
 See [Options](Option)
 
-#### Registering the Custom Data Types Inline
+#### Registering the Custom ReDataType Types Inline
 
-If you need to register Custom Data Types inline, you can do so in the Reference or Text Format
+If you need to register Custom ReDataType Types inline, you can do so in the Reference or Text Format
 
 See [Hints For Expressions](Expression)

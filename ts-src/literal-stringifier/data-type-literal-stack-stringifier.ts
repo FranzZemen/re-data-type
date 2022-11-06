@@ -1,7 +1,9 @@
+import {CheckFunction} from '@franzzemen/execution-context';
+import {LogExecutionContext, LoggerAdapter} from '@franzzemen/logger-adapter';
+import {loadFromModule} from '@franzzemen/module-factory';
 import {
-  CheckFunction,
   isRuleElementInstanceReference,
-  isRuleElementModuleReference, loadFromModule, LogExecutionContext, LoggerAdapter,
+  isRuleElementModuleReference,
   RuleElementInstanceReference,
   RuleElementModuleReference,
   RuleElementReference,

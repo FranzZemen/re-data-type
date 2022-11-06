@@ -1,8 +1,10 @@
-import {LogExecutionContext, RuleElementModuleReference} from '@franzzemen/re-common';
+import {LogExecutionContext} from '@franzzemen/logger-adapter';
+import {RuleElementModuleReference} from '@franzzemen/re-common';
 import {DataType} from '../data-type.js';
 import {StandardDataType} from '../standard-data-type.js';
 
 import {Moment, default as moment} from 'moment';
+
 const isMoment = moment.isMoment;
 
 export function isDateDataType(dt: any | DateDataType): dt is DateDataType {
@@ -12,10 +14,11 @@ export function isDateDataType(dt: any | DateDataType): dt is DateDataType {
 // TODO: Should truncate any time componets
 export class DateDataType extends DataType {
 
-  constructor (moduleRef?: RuleElementModuleReference, ec?: LogExecutionContext) {
+  constructor(moduleRef?: RuleElementModuleReference, ec?: LogExecutionContext) {
     super(StandardDataType.Date, moduleRef, ec);
     this.instanceRef = {refName: this.refName, instance: this};
   }
+
   eval(value: any): Moment {
     const basicType = typeof value;
     if (basicType === 'string') {

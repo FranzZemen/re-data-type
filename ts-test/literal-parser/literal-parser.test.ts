@@ -3,7 +3,7 @@ import 'mocha';
 import {
   BooleanLiteralParser, DataTypeInferenceStackParser, DataTypeOptions, DataTypeScope,
   DateLiteralParser,
-  FloatLiteralParser, NumberLiteralParser, StandardDataType,
+  FloatLiteralParser, NumberLiteralParser, ReDataType, StandardDataType,
   TextLiteralParser, TimeLiteralParser,
   TimestampLiteralParser
 } from '../../publish/index.js';
@@ -343,16 +343,18 @@ describe('re-data-type tests', () => {
     });
     describe('inference order tests', () => {
       it('should infer Timestamp as Text by flipping inference order', done => {
-        const options: DataTypeOptions = {
-          inferenceOrder: [
-            StandardDataType.Text,
-            StandardDataType.Timestamp,
-            StandardDataType.Date,
-            StandardDataType.Time,
-            StandardDataType.Float,
-            StandardDataType.Number,
-            StandardDataType.Boolean
-          ]
+        const options: ReDataType = {
+          data: {
+            inferenceOrder: [
+              StandardDataType.Text,
+              StandardDataType.Timestamp,
+              StandardDataType.Date,
+              StandardDataType.Time,
+              StandardDataType.Float,
+              StandardDataType.Number,
+              StandardDataType.Boolean
+            ]
+          }
         };
         const parsingScope = new DataTypeScope(options);
         const result = (parsingScope.get(DataTypeScope.DataTypeInferenceStackParser) as DataTypeInferenceStackParser).parse('"2021-01-01" = ', parsingScope, undefined);

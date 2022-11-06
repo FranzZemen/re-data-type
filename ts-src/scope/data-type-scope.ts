@@ -1,7 +1,7 @@
+import {CheckFunction} from '@franzzemen/execution-context';
+import {LogExecutionContext} from '@franzzemen/logger-adapter';
+import {ModuleResolutionAction} from '@franzzemen/module-resolver';
 import {
-  CheckFunction,
-  LogExecutionContext,
-  ModuleResolutionAction,
   RuleElementReference,
   Scope
 } from '@franzzemen/re-common';
@@ -17,7 +17,7 @@ import {NumberLiteralStringifier} from '../literal-stringifier/number-literal-st
 import {TextLiteralStringifier} from '../literal-stringifier/text-literal-stringifier.js';
 import {TimeLiteralStringifier} from '../literal-stringifier/time-literal-stringifier.js';
 import {TimestampLiteralStringifier} from '../literal-stringifier/timestamp-literal-stringifier.js';
-import {DataTypeOptions, defaultDataTypeInferenceOrder} from './data-type-options.js';
+import {DataTypeExecutionContextDefaults, DataTypeOptions, ReDataType} from './re-data-type-execution-context.js';
 
 export class DataTypeScope extends Scope {
 
@@ -33,17 +33,19 @@ export class DataTypeScope extends Scope {
   };
   private static checkDataType: CheckFunction = (new Validator()).compile(DataTypeScope.dataTypeSchema);
 
-  constructor(options?: DataTypeOptions, parentScope?: Scope, ec?: LogExecutionContext) {
-    super(options, parentScope, ec);
+  constructor(reOptions?: ReDataType, parentScope?: Scope, ec?: LogExecutionContext) {
+    super(reOptions, parentScope, ec);
     let inferenceOrder: string[];
-    this.set(DataTypeScope.DataTypeFactory, new DataTypeFactory());
-    if (options?.inferenceOrder?.length > 0) {
-      inferenceOrder = options.inferenceOrder;
-      this.set(DataTypeScope.DataTypeInferenceStack, options.inferenceOrder);
+
+    if (this.options.data?.inferenceOrder?.length > 0) {
+      inferenceOrder = this.options.data.inferenceOrder;
+      this.set(DataTypeScope.DataTypeInferenceStack, this.options.data.inferenceOrder);
     } else {
-      inferenceOrder = defaultDataTypeInferenceOrder;
-      this.set(DataTypeScope.DataTypeInferenceStack, defaultDataTypeInferenceOrder);
+      inferenceOrder = DataTypeExecutionContextDefaults.InferenceOrder;
+      this.set(DataTypeScope.DataTypeInferenceStack, inferenceOrder);
     }
+    this.set(DataTypeScope.DataTypeFactory, new DataTypeFactory());
+
     this.set(DataTypeScope.DataTypeInferenceStackParser, new DataTypeInferenceStackParser(inferenceOrder, ec));
 
     const dataTypeLiteralStackStringifier = new DataTypeLiteralStackStringifier();
@@ -56,6 +58,10 @@ export class DataTypeScope extends Scope {
     dataTypeLiteralStackStringifier.addStringifier(new DateLiteralStringifier());
     dataTypeLiteralStackStringifier.addStringifier(new TimestampLiteralStringifier());
     this.set(DataTypeScope.DataTypeLiteralStackStringifier, dataTypeLiteralStackStringifier);
+  }
+
+  get options(): ReDataType {
+    return this._options;
   }
 
   getDataType(refName: string, searchParent = true, ec?: LogExecutionContext): DataTypeI {

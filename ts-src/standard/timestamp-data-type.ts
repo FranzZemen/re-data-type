@@ -1,13 +1,14 @@
-import {LogExecutionContext, RuleElementModuleReference} from '@franzzemen/re-common';
+import {LogExecutionContext} from '@franzzemen/logger-adapter';
+import {RuleElementModuleReference} from '@franzzemen/re-common';
 import {DataType} from '../data-type.js';
 import {StandardDataType} from '../standard-data-type.js';
 
-import {Moment, default as moment} from 'moment';
+import {default as moment} from 'moment';
+
 const isMoment = moment.isMoment;
 
 
-
-export function isTimestampDataType (dt: any | TimestampDataType): dt is TimestampDataType {
+export function isTimestampDataType(dt: any | TimestampDataType): dt is TimestampDataType {
   return dt.type === StandardDataType.Timestamp;
 }
 

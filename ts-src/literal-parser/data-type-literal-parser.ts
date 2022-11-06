@@ -1,4 +1,5 @@
-import {LogExecutionContext, ParserMessages} from '@franzzemen/re-common';
+import {LogExecutionContext} from '@franzzemen/logger-adapter';
+import { ParserMessages} from '@franzzemen/re-common';
 import {StandardDataType} from '../standard-data-type.js';
 
 export interface DataTypeLiteralParserI {

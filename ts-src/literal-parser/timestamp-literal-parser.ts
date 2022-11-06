@@ -1,5 +1,5 @@
-import {LogExecutionContext, LoggerAdapter, ParserMessages, ParserMessageType} from '@franzzemen/re-common';
-
+import {LogExecutionContext, LoggerAdapter} from '@franzzemen/logger-adapter';
+import {ParserMessages, ParserMessageType} from '@franzzemen/re-common';
 import {default as moment} from 'moment';
 import {DataTypeStandardParserMessages} from '../parser-messages/data-type-standard-parser-messages.js';
 import {StandardDataType} from '../standard-data-type.js';
