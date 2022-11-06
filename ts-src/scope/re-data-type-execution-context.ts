@@ -100,7 +100,7 @@ export const dataTypeExecutionContextSchemaWrapper = {
 };
 
 
-export function isCommonExecutionContext(options: any | DataTypeExecutionContext): options is DataTypeExecutionContext {
+export function isDataTypeExecutionContext(options: any | DataTypeExecutionContext): options is DataTypeExecutionContext {
   return options && 're' in options; // Faster than validate
 }
 

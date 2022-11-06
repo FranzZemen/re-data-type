@@ -1,6 +1,6 @@
 {
   "name": "@franzzemen/re-data-type",
-  "version": "9.4.1",
+  "version": "9.4.2",
   "description": "Rules Engine Data Types",
   "type": "module",
   "main": "index.js",
