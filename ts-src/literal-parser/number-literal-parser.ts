@@ -11,13 +11,13 @@ export class NumberLiteralParser extends DataTypeLiteralParser {
   parse(remaining: string, forceType: boolean, execContext?:LogExecutionContext): [string, any, ParserMessages] {
     const parserMessages: ParserMessages = [{message: DataTypeStandardParserMessages.NumberDataTypeParsed, type: ParserMessageType.Info}];
 
-    let numberResult = /^([0-9]+)([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
+    let numberResult = /^([0-9]+)([\s)\],][^]*$|$)/.exec(remaining);
     if (numberResult) {
       return [numberResult[2].trim(), Number.parseInt(numberResult[1], 10), parserMessages];
     }
     if(forceType) {
       // Try text version
-      let numberResult = /^["']([0-9]+)["']([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
+      let numberResult = /^["']([0-9]+)["']([\s)\],][^]*$|$)/.exec(remaining);
       if (numberResult) {
         return [numberResult[2].trim(), Number.parseInt(numberResult[1], 10), parserMessages];
       }

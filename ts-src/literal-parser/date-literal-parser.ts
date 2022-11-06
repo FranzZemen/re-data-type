@@ -18,7 +18,7 @@ export class DateLiteralParser extends DataTypeLiteralParser {
     const parserMessages: ParserMessages = [{message: DataTypeStandardParserMessages.DateDataTypeParsed, type: ParserMessageType.Info}];
     const errorParserMessages: ParserMessages = [{message: `${DataTypeStandardParserMessages.NotADateFormat}: Not a date format near '${remaining}'`, type: ParserMessageType.Info}];
     // Quoted version
-    let result = /^("[0-9]{4}-[0-1][0-9]-[0-3][0-9]")([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
+    let result = /^("[0-9]{4}-[0-1][0-9]-[0-3][0-9]")([\s)\],][^]*$|$)/.exec(remaining);
     if(result) {
       const dateMoment = moment(result[1], 'YYYY-MM-DD');
       if (typeof dateMoment === 'string' && dateMoment === 'Moment<Invalid date>') {
@@ -28,7 +28,7 @@ export class DateLiteralParser extends DataTypeLiteralParser {
       }
     }
     // Unquoted version
-    result = /^([0-9]{4}-[0-1][0-9]-[0-3][0-9])([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
+    result = /^([0-9]{4}-[0-1][0-9]-[0-3][0-9])([\s)\],][^]*$|$)/.exec(remaining);
     if(result) {
       const dateMoment = moment(result[1], 'YYYY-MM-DD');
       if (typeof dateMoment === 'string' && dateMoment === 'Moment<Invalid date>') {
@@ -39,19 +39,19 @@ export class DateLiteralParser extends DataTypeLiteralParser {
     }
     if(forceType) {
       // Number conversion
-      result = /^([0-9]+)([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
+      result = /^([0-9]+)([\s)\],][^]*$|$)/.exec(remaining);
       if(result) {
         const timestampMoment = moment(Number.parseInt(result[1],10));
         return [result[2].trim(), timestampMoment, parserMessages];
       }
       // Text version of number
-      result = /^"([0-9]+)"([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
+      result = /^"([0-9]+)"([\s)\],][^]*$|$)/.exec(remaining);
       if(result) {
         const timestampMoment = moment(Number.parseInt(result[1],10));
         return [result[2].trim(), timestampMoment, parserMessages];
       }
       // Final attempt - any text & let moment figure it out
-      result = /^("[^"]+")([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
+      result = /^("[^"]+")([\s)\],][^]*$|$)/.exec(remaining);
       if (result) {
         const timestampMoment = moment(result[1]);
         if (typeof timestampMoment === 'string' && timestampMoment === 'Moment<Invalid date>') {

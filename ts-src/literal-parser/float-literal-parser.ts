@@ -11,13 +11,13 @@ export class FloatLiteralParser extends DataTypeLiteralParser {
   parse(remaining: string, forceType: boolean, execContext?:LogExecutionContext): [string, any, ParserMessages] {
     const parserMessages: ParserMessages = [{message: DataTypeStandardParserMessages.FloatDataTypeParsed, type: ParserMessageType.Info}];
 
-    let floatResult = /^([0-9]+\.[0-9]+)([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
+    let floatResult = /^([0-9]+\.[0-9]+)([\s)\],][^]*$|$)/.exec(remaining);
     if (floatResult) {
       return [floatResult[2].trim(), Number.parseFloat(floatResult[1]), parserMessages];
     }
     if (forceType) {
       // Try text version
-      let floatResult = /^"([0-9]+\.[0-9]+)"([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
+      let floatResult = /^"([0-9]+\.[0-9]+)"([\s)\],][^]*$|$)/.exec(remaining);
       if (floatResult) {
         return [floatResult[2].trim(), Number.parseFloat(floatResult[1]), parserMessages];
       }

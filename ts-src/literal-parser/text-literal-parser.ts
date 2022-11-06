@@ -10,7 +10,7 @@ export class TextLiteralParser extends DataTypeLiteralParser {
 
 
   parse(remaining: string, forceType: boolean, execContext?:LogExecutionContext): [string, any, ParserMessages] {
-    let result = /^["']([^]*)["']([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
+    let result = /^["']([^]*)["']([\s)\],][^]*$|$)/.exec(remaining);
     const parserMessages: ParserMessages = [{message: DataTypeStandardParserMessages.TextDataTypeParsed, type: ParserMessageType.Info}];
     if(result) {
       return [result[2].trim(), result[1], parserMessages];
