@@ -6,10 +6,10 @@ import {AppExecutionContextDefaults, appSchemaWrapper} from '@franzzemen/app-exe
 import {ExecutionContextDefaults, executionSchemaWrapper} from '@franzzemen/execution-context';
 import {LogExecutionContextDefaults, logSchemaWrapper} from '@franzzemen/logger-adapter';
 import {
-  ReCommon,
   CommonExecutionContext,
   CommonExecutionContextDefaults,
-  reCommonSchemaWrapper
+  commonOptionsSchemaWrapper,
+  ReCommon
 } from '@franzzemen/re-common';
 import Validator, {ValidationError} from 'fastest-validator';
 import {isPromise} from 'util/types';
@@ -73,7 +73,7 @@ export const dataTypeOptionsSchemaWrapper = {
 };
 
 const reDataTypeSchema = {
-  common: reCommonSchemaWrapper,
+  common: commonOptionsSchemaWrapper,
   data: dataTypeOptionsSchemaWrapper
 };
 
