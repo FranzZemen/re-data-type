@@ -1,6 +1,10 @@
-import {ExecutionContextI, isEnumeratedType, LoggerAdapter, reverseEnumerationToSet} from '@franzzemen/app-utility';
-import {logErrorAndThrow} from '@franzzemen/app-utility/enhanced-error.js';
-import {RuleElementInstanceReference, RuleElementModuleReference, RuleElementReference} from '@franzzemen/re-common';
+import {
+  isEnumeratedType, logErrorAndThrow, LogExecutionContext, LoggerAdapter,
+  reverseEnumerationToSet,
+  RuleElementInstanceReference,
+  RuleElementModuleReference,
+  RuleElementReference
+} from '@franzzemen/re-common';
 import {StandardDataType} from './standard-data-type.js';
 
 
@@ -22,7 +26,7 @@ export interface DataTypeI {
 
 export abstract class DataType implements  RuleElementReference<DataTypeI>, DataTypeI {
   instanceRef: RuleElementInstanceReference<DataType> = undefined;
-  constructor(public refName: string, public moduleRef?: RuleElementModuleReference, ec?: ExecutionContextI) {
+  constructor(public refName: string, public moduleRef?: RuleElementModuleReference, ec?: LogExecutionContext) {
     if(moduleRef) {
       if(refName != moduleRef.refName) {
         logErrorAndThrow(`Inconsistent refName ${refName} and moduleRef.refName ${moduleRef.refName}`, new LoggerAdapter(ec, 're-data-type', 'data-type', DataType.name));

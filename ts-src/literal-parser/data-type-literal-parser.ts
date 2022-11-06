@@ -1,10 +1,9 @@
-import {ExecutionContextI} from '@franzzemen/app-utility';
-import {ParserMessages} from '@franzzemen/re-common';
+import {LogExecutionContext, ParserMessages} from '@franzzemen/re-common';
 import {StandardDataType} from '../standard-data-type.js';
 
 export interface DataTypeLiteralParserI {
   refName: string;
-  parse(remaining: string, forceType: boolean, execContext?: ExecutionContextI): [string, any, ParserMessages];
+  parse(remaining: string, forceType: boolean, execContext?: LogExecutionContext): [string, any, ParserMessages];
 }
 
 export abstract class DataTypeLiteralParser implements DataTypeLiteralParserI {
@@ -25,5 +24,5 @@ export abstract class DataTypeLiteralParser implements DataTypeLiteralParserI {
    * @return a tuple where the first element is the remaining text after inferred value is removed and the second element
    * is the value or undefined if inference failed
    */
-  abstract parse(remaining: string, forceType: boolean, execContext?: ExecutionContextI): [string, any, ParserMessages];
+  abstract parse(remaining: string, forceType: boolean, execContext?: LogExecutionContext): [string, any, ParserMessages];
 }

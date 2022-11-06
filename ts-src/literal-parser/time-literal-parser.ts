@@ -1,6 +1,4 @@
-import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
-import {logErrorAndThrow} from '@franzzemen/app-utility/enhanced-error.js';
-import {ParserMessages, ParserMessageType} from '@franzzemen/re-common';
+import {LogExecutionContext, LoggerAdapter, ParserMessages, ParserMessageType} from '@franzzemen/re-common';
 import {DataTypeStandardParserMessages} from '../parser-messages/data-type-standard-parser-messages.js';
 import {StandardDataType} from '../standard-data-type.js';
 import {DataTypeLiteralParser} from './data-type-literal-parser.js';
@@ -14,7 +12,7 @@ export class TimeLiteralParser extends DataTypeLiteralParser {
     super(StandardDataType.Time);
   }
 
-  parse(remaining: string, forceType: boolean, ec?:ExecutionContextI): [string, any, ParserMessages] {
+  parse(remaining: string, forceType: boolean, ec?:LogExecutionContext): [string, any, ParserMessages] {
     const log = new LoggerAdapter(ec, 're-data-type', 'time-data-type.ts', 'parse');
     const parserMessages: ParserMessages = [{message: DataTypeStandardParserMessages.TimeDataTypeParsed, type: ParserMessageType.Info}];
     const errorParserMessages: ParserMessages = [{message: `${DataTypeStandardParserMessages.NotATimeFormat}: Not a time format near '${remaining}'`, type: ParserMessageType.Info}];

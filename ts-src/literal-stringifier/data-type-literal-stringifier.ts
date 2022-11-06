@@ -1,10 +1,10 @@
-import {ExecutionContextI} from '@franzzemen/app-utility';
+import {LogExecutionContext} from '@franzzemen/re-common';
 import {StandardDataType} from '../standard-data-type.js';
 import {StringifyDataTypeOptions} from './stringify-data-type-options.js';
 
 export interface DataTypeLiteralStringifierI {
   refName: StandardDataType | string;
-  stringify(value: any, scope: Map<string, any>, options: StringifyDataTypeOptions, ec?: ExecutionContextI) : string;
+  stringify(value: any, scope: Map<string, any>, options: StringifyDataTypeOptions, ec?: LogExecutionContext) : string;
 }
 
 
@@ -12,5 +12,5 @@ export abstract class DataTypeLiteralStringifier implements DataTypeLiteralStrin
 
   constructor(public refName: StandardDataType | string) {
   }
-  abstract stringify(value: any, scope: Map<string, any>, options: StringifyDataTypeOptions, ec?: ExecutionContextI) : string;
+  abstract stringify(value: any, scope: Map<string, any>, options: StringifyDataTypeOptions, ec?: LogExecutionContext) : string;
 }

@@ -1,5 +1,4 @@
-import {ExecutionContextI} from '@franzzemen/app-utility';
-import {ParserMessages, ParserMessageType} from '@franzzemen/re-common';
+import {LogExecutionContext, ParserMessages, ParserMessageType} from '@franzzemen/re-common';
 import {DataTypeStandardParserMessages} from '../parser-messages/data-type-standard-parser-messages.js';
 import {StandardDataType} from '../standard-data-type.js';
 import {DataTypeLiteralParser} from './data-type-literal-parser.js';
@@ -8,7 +7,7 @@ export class BooleanLiteralParser extends DataTypeLiteralParser {
   constructor() {
     super(StandardDataType.Boolean);
   }
-  parse(remaining: string, forceType: boolean, execContext?:ExecutionContextI): [string, any, ParserMessages] {
+  parse(remaining: string, forceType: boolean, execContext?:LogExecutionContext): [string, any, ParserMessages] {
     const parserMessages: ParserMessages = [{message: DataTypeStandardParserMessages.BooleanDataTypeParsed, type: ParserMessageType.Info}];
 
     let trueResult, falseResult;

@@ -1,7 +1,7 @@
-import {CheckFunction, ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
 import {
+  CheckFunction,
   InferenceStackParser,
-  isRuleElementModuleReference,
+  isRuleElementModuleReference, LogExecutionContext, LoggerAdapter,
   ParserMessages,
   ParserMessageType,
   RuleElementModuleReference
@@ -27,7 +27,7 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
     parse: {type: 'function', optional: false}
   });
 
-  constructor(private standardDataTypeInferenceStack?: string[], ec?: ExecutionContextI) {
+  constructor(private standardDataTypeInferenceStack?: string[], ec?: LogExecutionContext) {
     super();
     if (standardDataTypeInferenceStack) {
       standardDataTypeInferenceStack.forEach(inference => {
@@ -61,7 +61,7 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
     }
   }
 
-  parse(remaining: string, scope: Map<string, any>, dataTypeRef?: string, ec?: ExecutionContextI): DataTypeInferenceStackParserResult {
+  parse(remaining: string, scope: Map<string, any>, dataTypeRef?: string, ec?: LogExecutionContext): DataTypeInferenceStackParserResult {
     const log = new LoggerAdapter(ec, 're-data-type', 'data-type-inference-stack-parser', 'parse');
     if (dataTypeRef && dataTypeRef !== StandardDataType.Indeterminate && dataTypeRef !== StandardDataType.Unknown) {
       const parser = this.parserMap.get(dataTypeRef);
@@ -111,7 +111,7 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
     }
   }
 
-  addParser(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, override?: boolean, ec?: ExecutionContextI): DataTypeLiteralParserI | Promise<DataTypeLiteralParserI> {
+  addParser(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, override?: boolean, ec?: LogExecutionContext): DataTypeLiteralParserI | Promise<DataTypeLiteralParserI> {
     if (isRuleElementModuleReference(stackedParser)) {
       if (stackedParser.module.loadSchema === undefined) {
         stackedParser.module.loadSchema = this.checkFunction;
@@ -120,7 +120,7 @@ export class DataTypeInferenceStackParser extends InferenceStackParser<DataTypeL
     return super.addParser(stackedParser, override, ec);
   }
 
-  addParserAtStackIndex(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, stackIndex: number, ec?: ExecutionContextI): boolean | Promise<boolean> {
+  addParserAtStackIndex(stackedParser: RuleElementModuleReference | DataTypeLiteralParserI, stackIndex: number, ec?: LogExecutionContext): boolean | Promise<boolean> {
     if (isRuleElementModuleReference(stackedParser)) {
       if (stackedParser.module.loadSchema === undefined) {
         stackedParser.module.loadSchema = this.checkFunction;

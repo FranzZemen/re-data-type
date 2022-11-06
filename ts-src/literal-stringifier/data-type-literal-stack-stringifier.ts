@@ -1,14 +1,14 @@
-import {logErrorAndThrow} from '@franzzemen/app-utility/enhanced-error.js';
+import {
+  CheckFunction,
+  isRuleElementInstanceReference,
+  isRuleElementModuleReference, loadFromModule, LogExecutionContext, LoggerAdapter,
+  RuleElementInstanceReference,
+  RuleElementModuleReference,
+  RuleElementReference,
+  ScopedFactory
+} from '@franzzemen/re-common';
 import Validator from 'fastest-validator';
 import {isPromise} from 'node:util/types';
-import {CheckFunction, ExecutionContextI, loadFromModule, LoggerAdapter} from '@franzzemen/app-utility';
-import {
-  isRuleElementInstanceReference,
-  isRuleElementModuleReference, RuleElementInstanceReference,
-  RuleElementModuleReference,
-  RuleElementReference
-} from '@franzzemen/re-common';
-import {ScopedFactory} from '@franzzemen/re-common';
 import {StandardDataType} from '../standard-data-type.js';
 import {DataTypeLiteralStringifierI} from './data-type-literal-stringifier.js';
 import {StringifyDataTypeOptions} from './stringify-data-type-options.js';
@@ -24,12 +24,12 @@ export class DataTypeLiteralStackStringifier implements ScopedFactory<DataTypeLi
   constructor() {
   }
 
-  stringify(value: any, dataTypeRef: StandardDataType | string, scope: Map<string, any>, stringifyDataTypeOptions: StringifyDataTypeOptions, ec?: ExecutionContextI): string {
+  stringify(value: any, dataTypeRef: StandardDataType | string, scope: Map<string, any>, stringifyDataTypeOptions: StringifyDataTypeOptions, ec?: LogExecutionContext): string {
     const stringifier: DataTypeLiteralStringifierI = this.getStringifier(dataTypeRef, ec);
     return stringifier.stringify(value, scope, stringifyDataTypeOptions, ec);
   }
 
-  addStringifier(stringifier: DataTypeLiteralStringifierI | RuleElementModuleReference, override = false,  ec?: ExecutionContextI): DataTypeLiteralStringifierI | Promise<DataTypeLiteralStringifierI> {
+  addStringifier(stringifier: DataTypeLiteralStringifierI | RuleElementModuleReference, override = false,  ec?: LogExecutionContext): DataTypeLiteralStringifierI | Promise<DataTypeLiteralStringifierI> {
     const log = new LoggerAdapter(ec, 're-data-type', 'data-type-literal-stack-stringifier', 'addStringifier');
     const dataTypeLiteralStringifier = this.stringifierMap.get(stringifier.refName)?.instanceRef?.instance;
 
@@ -45,7 +45,7 @@ export class DataTypeLiteralStackStringifier implements ScopedFactory<DataTypeLi
         if(stringifier.module.loadSchema === undefined) {
           stringifier.module.loadSchema = this.check;
         }
-        dataTypeLiteralStringifierOrPromise = loadFromModule<DataTypeLiteralStringifierI>(stringifier.module, ec);
+        dataTypeLiteralStringifierOrPromise = loadFromModule<DataTypeLiteralStringifierI>(stringifier.module, log.nativeLogger);
         if (isPromise(dataTypeLiteralStringifierOrPromise)) {
           return dataTypeLiteralStringifierOrPromise
             .then(instance => {
@@ -69,7 +69,7 @@ export class DataTypeLiteralStackStringifier implements ScopedFactory<DataTypeLi
     }
   }
 
-  hasStringifier(refName: string, execContext?: ExecutionContextI): boolean {
+  hasStringifier(refName: string, execContext?: LogExecutionContext): boolean {
     if(refName) {
       return this.stringifierMap.has(refName);
     } else {
@@ -77,16 +77,16 @@ export class DataTypeLiteralStackStringifier implements ScopedFactory<DataTypeLi
     }
   }
 
-  getStringifier(refName: string, ec?: ExecutionContextI): DataTypeLiteralStringifierI {
+  getStringifier(refName: string, ec?: LogExecutionContext): DataTypeLiteralStringifierI {
     return this.stringifierMap.get(refName).instanceRef.instance;
   }
 
-  removeStringifier(refName: string, ec?: ExecutionContextI): boolean {
+  removeStringifier(refName: string, ec?: LogExecutionContext): boolean {
     return this.stringifierMap.delete(refName);
   }
 
 
-  register(reference: DataTypeLiteralStringifierI | RuleElementModuleReference | RuleElementInstanceReference<DataTypeLiteralStringifierI>, override,  ec?: ExecutionContextI): DataTypeLiteralStringifierI | Promise<DataTypeLiteralStringifierI> {
+  register(reference: DataTypeLiteralStringifierI | RuleElementModuleReference | RuleElementInstanceReference<DataTypeLiteralStringifierI>, override,  ec?: LogExecutionContext): DataTypeLiteralStringifierI | Promise<DataTypeLiteralStringifierI> {
     if(!isRuleElementInstanceReference(reference)) {
       return this.addStringifier(reference, override = false,  ec);
     } else {
@@ -94,15 +94,15 @@ export class DataTypeLiteralStackStringifier implements ScopedFactory<DataTypeLi
     }
   }
 
-  unregister(refName: string, execContext?: ExecutionContextI): boolean {
+  unregister(refName: string, execContext?: LogExecutionContext): boolean {
     return this.removeStringifier(refName, execContext);
   }
 
-  hasRegistered(refName: string, execContext?: ExecutionContextI): boolean {
+  hasRegistered(refName: string, execContext?: LogExecutionContext): boolean {
     return this.hasStringifier(refName, execContext);
   }
 
-  getRegistered(refName: string, ec?: ExecutionContextI): DataTypeLiteralStringifierI {
+  getRegistered(refName: string, ec?: LogExecutionContext): DataTypeLiteralStringifierI {
     return this.getStringifier(refName, ec);
   }
 }

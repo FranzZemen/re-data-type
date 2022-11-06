@@ -1,6 +1,4 @@
-import {ExecutionContextI, LoggerAdapter} from '@franzzemen/app-utility';
-import {logErrorAndThrow} from '@franzzemen/app-utility/enhanced-error.js';
-import {ParserMessages, ParserMessageType} from '@franzzemen/re-common';
+import {LogExecutionContext, LoggerAdapter, ParserMessages, ParserMessageType} from '@franzzemen/re-common';
 
 import {default as moment} from 'moment';
 import {DataTypeStandardParserMessages} from '../parser-messages/data-type-standard-parser-messages.js';
@@ -16,7 +14,7 @@ export class TimestampLiteralParser extends DataTypeLiteralParser {
   }
 
 
-  parse(remaining: string, forceType: boolean, ec?:ExecutionContextI): [string, any, ParserMessages] {
+  parse(remaining: string, forceType: boolean, ec?:LogExecutionContext): [string, any, ParserMessages] {
     const log = new LoggerAdapter(ec, 're-data-type', 'timestamp-data-type.ts', 'parse');
     // Quoted version
     const parserMessages: ParserMessages = [{message: DataTypeStandardParserMessages.TimestampDataTypeParsed, type: ParserMessageType.Info}];

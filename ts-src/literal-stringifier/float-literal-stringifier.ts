@@ -1,4 +1,4 @@
-import {ExecutionContextI} from '@franzzemen/app-utility';
+import {LogExecutionContext} from '@franzzemen/re-common';
 import {StandardDataType} from '../standard-data-type.js';
 import {FloatDataType} from '../standard/float-data-type.js';
 import {DataTypeLiteralStringifier} from './data-type-literal-stringifier.js';
@@ -9,7 +9,7 @@ export class FloatLiteralStringifier extends DataTypeLiteralStringifier {
     super(StandardDataType.Float);
   }
 
-  stringify(value: any, scope: Map<string, any>, options: StringifyDataTypeOptions, ec?: ExecutionContextI): string {
+  stringify(value: any, scope: Map<string, any>, options: StringifyDataTypeOptions, ec?: LogExecutionContext): string {
 
     const float = (new FloatDataType()).eval(value);
     if(float%1 === 0) {

@@ -1,5 +1,4 @@
-import {ExecutionContextI} from '@franzzemen/app-utility';
-import {RuleElementModuleReference} from '@franzzemen/re-common';
+import {LogExecutionContext, RuleElementModuleReference} from '@franzzemen/re-common';
 import {DataType} from '../data-type.js';
 import {StandardDataType} from '../standard-data-type.js';
 
@@ -12,7 +11,7 @@ export function isTextDataType(dt: any | TextDataType): dt is TextDataType {
 }
 
 export class TextDataType extends DataType {
-  constructor(moduleRef?: RuleElementModuleReference, ec?: ExecutionContextI) {
+  constructor(moduleRef?: RuleElementModuleReference, ec?: LogExecutionContext) {
     super(StandardDataType.Text, moduleRef, ec);
     this.instanceRef = {refName: this.refName, instance: this};
   }

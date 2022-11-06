@@ -1,20 +1,11 @@
 import {
   CheckFunction,
-  ExecutionContextI,
-  LoadPackageType,
-  LoggerAdapter, ModuleResolutionAction, ModuleResolutionResult, ModuleResolutionSetter,
-  ModuleResolver
-} from '@franzzemen/app-utility';
-import {EnhancedError, logErrorAndThrow} from '@franzzemen/app-utility/enhanced-error.js';
-import {
-  isRuleElementInstanceReference,
-  isRuleElementModuleReference,
-  RuleElementInstanceReference,
-  RuleElementModuleReference, RuleElementReference,
+  LogExecutionContext,
+  ModuleResolutionAction,
+  RuleElementReference,
   Scope
 } from '@franzzemen/re-common';
 import Validator, {ValidationSchema} from 'fastest-validator';
-import {isPromise} from 'node:util/types';
 import {DataTypeI} from '../data-type.js';
 import {DataTypeFactory} from '../factory/data-type-factory.js';
 import {DataTypeInferenceStackParser} from '../literal-parser/data-type-inference-stack-parser.js';
@@ -42,7 +33,7 @@ export class DataTypeScope extends Scope {
   };
   private static checkDataType: CheckFunction = (new Validator()).compile(DataTypeScope.dataTypeSchema);
 
-  constructor(options?: DataTypeOptions, parentScope?: Scope, ec?: ExecutionContextI) {
+  constructor(options?: DataTypeOptions, parentScope?: Scope, ec?: LogExecutionContext) {
     super(options, parentScope, ec);
     let inferenceOrder: string[];
     this.set(DataTypeScope.DataTypeFactory, new DataTypeFactory());
@@ -67,22 +58,22 @@ export class DataTypeScope extends Scope {
     this.set(DataTypeScope.DataTypeLiteralStackStringifier, dataTypeLiteralStackStringifier);
   }
 
-  getDataType(refName: string, searchParent = true, ec?: ExecutionContextI): DataTypeI {
+  getDataType(refName: string, searchParent = true, ec?: LogExecutionContext): DataTypeI {
     return this.getScopedFactoryItem<DataTypeI>(refName, DataTypeScope.DataTypeFactory, searchParent, ec);
   }
 
-  addDataType(dataTypeRef: RuleElementReference<DataTypeI>, action?: ModuleResolutionAction, ec?: ExecutionContextI) {
+  addDataType(dataTypeRef: RuleElementReference<DataTypeI>, action?: ModuleResolutionAction, ec?: LogExecutionContext) {
     return this.addRuleElementReferenceItem<DataTypeI>(dataTypeRef, DataTypeScope.DataTypeFactory, action, ec);
   }
-  addDataTypes(dataTypeRefs: RuleElementReference<DataTypeI>[], actions?: ModuleResolutionAction[], ec?: ExecutionContextI) {
+  addDataTypes(dataTypeRefs: RuleElementReference<DataTypeI>[], actions?: ModuleResolutionAction[], ec?: LogExecutionContext) {
     return this.addRuleElementReferenceItems<DataTypeI>(dataTypeRefs, DataTypeScope.DataTypeFactory, actions, ec);
   }
 
-  hasDataType(refName: string, ec?: ExecutionContextI): boolean {
+  hasDataType(refName: string, ec?: LogExecutionContext): boolean {
     return this.hasScopedFactoryItem(refName, DataTypeScope.DataTypeFactory, ec);
   }
   /*
-  loadPendingResolutionsFromReferences(ref: any, factory?: string, action?: ModuleResolutionAction, ec?: ExecutionContextI) {
+  loadPendingResolutionsFromReferences(ref: any, factory?: string, action?: ModuleResolutionAction, ec?: LogExecutionContext) {
     if(ref.)
     const dataTypeFactory : DataTypeFactory
     super.loadPendingResolutionsFromReferences(ref, factory, action, ec);

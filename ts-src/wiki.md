@@ -140,7 +140,7 @@ would be used than these low level parsers.
 
 Each Data Type (including Custom Data Types) has their own parsers that supply the following API:
 
-    parse(remaining: string, forceType: boolean, ec?: ExecutionContextI): [string, any];
+    parse(remaining: string, forceType: boolean, ec?: LogExecutionContext): [string, any];
     
     where:
         
@@ -166,7 +166,7 @@ These parsers only parse if they find their own respective values. There is an o
 
 This is the DataTypeInferenceStackParser and its API is:
 
-    parse(remaining: string, scope: Map<string, any>, dataTypeRef: string, execContext?: ExecutionContextI): [string,[any, string]]
+    parse(remaining: string, scope: Map<string, any>, dataTypeRef: string, execContext?: LogExecutionContext): [string,[any, string]]
 
 This method accepts the text to parse, where here also the literal values should be immediately at the start of the
 text, followed by the abstracted [Scope](Scope) (provided by a Map), the inferred context any the optional

@@ -1,8 +1,6 @@
-import {ExecutionContextI} from '@franzzemen/app-utility';
-import {RuleElementFactory} from '@franzzemen/re-common';
-import {StandardDataType} from '../standard-data-type.js';
-import {BooleanDataType} from '../standard/boolean-data-type.js';
+import {LogExecutionContext, RuleElementFactory} from '@franzzemen/re-common';
 import {DataTypeI, isDataType} from '../data-type.js';
+import {BooleanDataType} from '../standard/boolean-data-type.js';
 import {DateDataType} from '../standard/date-data-type.js';
 import {FloatDataType} from '../standard/float-data-type.js';
 import {NumberDataType} from '../standard/number-data-type.js';
@@ -12,7 +10,7 @@ import {TimestampDataType} from '../standard/timestamp-data-type.js';
 
 
 export class DataTypeFactory extends RuleElementFactory<DataTypeI> {
-  constructor(private registerStandardDataTypes: boolean = true, execContext?: ExecutionContextI) {
+  constructor(private registerStandardDataTypes: boolean = true, execContext?: LogExecutionContext) {
     super();
     if(registerStandardDataTypes) {
       this.register(new TimestampDataType());

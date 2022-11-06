@@ -1,5 +1,4 @@
-import {ExecutionContextI} from '@franzzemen/app-utility';
-import {ParserMessages, ParserMessageType} from '@franzzemen/re-common';
+import {LogExecutionContext, ParserMessages, ParserMessageType} from '@franzzemen/re-common';
 import {DataTypeStandardParserMessages} from '../parser-messages/data-type-standard-parser-messages.js';
 import {StandardDataType} from '../standard-data-type.js';
 import {DataTypeLiteralParser} from './data-type-literal-parser.js';
@@ -9,7 +8,7 @@ export class NumberLiteralParser extends DataTypeLiteralParser {
     super(StandardDataType.Number);
   }
 
-  parse(remaining: string, forceType: boolean, execContext?:ExecutionContextI): [string, any, ParserMessages] {
+  parse(remaining: string, forceType: boolean, execContext?:LogExecutionContext): [string, any, ParserMessages] {
     const parserMessages: ParserMessages = [{message: DataTypeStandardParserMessages.NumberDataTypeParsed, type: ParserMessageType.Info}];
 
     let numberResult = /^([0-9]+)([\s\t\r\n\v\f\u2028\u2029)\],][^]*$|$)/.exec(remaining);
