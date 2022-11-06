@@ -9,7 +9,7 @@ import {
   ReCommon,
   CommonExecutionContext,
   CommonExecutionContextDefaults,
-  commonSchemaWrapper as reCommonSchemaWrapper
+  reCommonSchemaWrapper
 } from '@franzzemen/re-common';
 import Validator, {ValidationError} from 'fastest-validator';
 import {isPromise} from 'util/types';
