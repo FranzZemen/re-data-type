@@ -37,9 +37,9 @@ export class DataTypeScope extends Scope {
     super(reOptions, parentScope, ec);
     let inferenceOrder: string[];
 
-    if (this.options.data?.inferenceOrder?.length > 0) {
-      inferenceOrder = this.options.data.inferenceOrder;
-      this.set(DataTypeScope.DataTypeInferenceStack, this.options.data.inferenceOrder);
+    if (this.options['re-data-type']?.inferenceOrder?.length > 0) {
+      inferenceOrder = this.options['re-data-type'].inferenceOrder;
+      this.set(DataTypeScope.DataTypeInferenceStack, this.options['re-data-type'].inferenceOrder);
     } else {
       inferenceOrder = DataTypeExecutionContextDefaults.InferenceOrder;
       this.set(DataTypeScope.DataTypeInferenceStack, inferenceOrder);

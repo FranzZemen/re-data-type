@@ -21,7 +21,7 @@ export interface DataTypeOptions {
 }
 
 export interface ReDataType extends ReCommon {
-  data?: DataTypeOptions;
+  're-data-type'?: DataTypeOptions;
 }
 
 export interface DataTypeExecutionContext extends CommonExecutionContext {
@@ -44,8 +44,8 @@ export class DataTypeExecutionContextDefaults {
   };
 
   static ReDataType: ReDataType = {
-    common: CommonExecutionContextDefaults.CommonOptions,
-    data: DataTypeExecutionContextDefaults.DataTypeOptions
+    're-common': CommonExecutionContextDefaults.CommonOptions,
+    're-data-type': DataTypeExecutionContextDefaults.DataTypeOptions
   };
 
   static DataTypeExecutionContext: DataTypeExecutionContext = {
@@ -73,8 +73,8 @@ export const dataTypeOptionsSchemaWrapper = {
 };
 
 const reDataTypeSchema = {
-  common: commonOptionsSchemaWrapper,
-  data: dataTypeOptionsSchemaWrapper
+  're-common': commonOptionsSchemaWrapper,
+  're-data-type': dataTypeOptionsSchemaWrapper
 };
 
 export const reDataTypeSchemaWrapper = {

@@ -344,7 +344,7 @@ describe('re-data-type tests', () => {
     describe('inference order tests', () => {
       it('should infer Timestamp as Text by flipping inference order', done => {
         const options: ReDataType = {
-          data: {
+          're-data-type': {
             inferenceOrder: [
               StandardDataType.Text,
               StandardDataType.Timestamp,
